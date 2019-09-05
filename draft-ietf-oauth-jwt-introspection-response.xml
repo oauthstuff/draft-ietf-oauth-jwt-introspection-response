@@ -139,6 +139,8 @@
       signed JWT as the introspection response. This specification extends the
       token introspection endpoint with the capability to return responses as
       JWTs.</t>
+      </section>
+      
        <section anchor="RNC" title="Requirements Notation and Conventions">
 <t>
   The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
@@ -148,9 +150,50 @@
   when, and only when, they appear in all capitals, as shown here.
 </t>
     </section>
+    
+    <section anchor="as-rs-relationshio" title="Resource server management">
+    <t>Authorization server and resource server have a strong trust relationsship.
+    The resource server relies in the authorization server to provide the authorization 
+    and user data it basis its access control decisions and service delivery on. 
+    And the authorization server relies on the resource server to handle the data provided
+    appropriately.</t> 
+    <t>In the context of this draft, the Token Introspection Endpoint is used to convey 
+    this security and, potentially, privacy sensitive data related to a particular access 
+    token.</t>
+    <t>As a foundation to process all introspection requests in a secure and 
+    privacy-preserving manner, the authorization server MUST be able to identify, 
+    authenticate and authorize resource servers.</t>
+    <t>In order to support encrypted JWTs as 
+    token introspection responses, the authorization server also MUST know the respective
+    encryption keys and algorithms. </t>
+    <t>The authorization server MUST be able to determine
+    whether a certain RS is authorized to obtain data for a particular access token 
+    and what data it is entitled to get. For example, the AS could maintain a relationship
+    between scopes values and RSs.</t>
+    <t>The requirements given above require the authorization server 
+    to maintain credentials and further configuration data on a per-RS-basis.</t> 
+    <t>One way to setup and maintain RS configurations is to utilize dynamic client
+    registration <xref target="RFC7591"/> and treat every RS as an OAuth client. In this case, 
+    the authorization server is assumed to at least maintain "client_id" and 
+    "token_endpoint_auth_method" as well as further data specific to a certain endpoint 
+    authentication method, such as "jwks" or "client_secret". In cases 
+    where the AS needs to acquire consent for data tranmission to a RS, the following 
+    client metadata fields are recommended to be utilized: "client_name", "client_uri", 
+    "contacts", "tos_uri", "policy_uri".</t>
+   <t>This draft defines further client metadata suited to manage the 
+    configuration options required to encrypt token introspection responses.</t>
+    <t>The AS MUST restrict the permissions of the client credentials used by a 
+    RS to the required functions, e.g. the AS MAY restrict such a client to call
+    the token introspection endpoint only. The way the AS maintains and determines 
+    the client credentials authorization is out of scope of this draft.</t>
     </section>
 
 	<section anchor="jwt_request" title="Requesting a JWT Response">
+	
+	  <t>Authentication at the token introspection endpoint can utilize client authentication
+    methods or or separate access tokens issued to the resource server.</t>
+    
+    
 	<t>A resource server requests to receive a JWT introspection response by
         including an Accept header with content type "application/jwt" in the
         introspection request.</t>
