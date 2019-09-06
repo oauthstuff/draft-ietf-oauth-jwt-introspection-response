@@ -225,7 +225,8 @@ token=2YotnFZFEjr1zCsicMWpAA]]></artwork>
           
       <t>The content of the introspection response is determined by the
       RS-specific policy set up at the AS. For example, the AS
-      SHOULD narrow down the scope values to the scope values relevant for the
+      SHOULD narrow down the scope values of the access token passed in the token 
+      introspection request to the scope values relevant for the
       RS. The AS also determines based on the RS-specific policy what user data
       needs to be returned in the introspection response. The AS MUST ensure 
       that the release of any privacy-sensitive data is based on an appropriate 
@@ -234,10 +235,26 @@ token=2YotnFZFEjr1zCsicMWpAA]]></artwork>
       <t>This JWT MUST contain the claims 
 	  <spanx style="verb">iss</spanx> and <spanx style="verb">aud</spanx> in order to 
 	  prevent misuse of the JWT as ID or access token 
-	  (see <xref target="Cross-JWT_Confusion"/>). The <spanx style="verb">iss</spanx> MUST 
-	  be set to the issuer URL of the AS. If the AS utilizes client authentication to 
+	  (see <xref target="Cross-JWT_Confusion"/>).</t>
+	  
+	  <t>The <spanx style="verb">iss</spanx> MUST 
+	  be set to the issuer URL of the AS.</t> 
+	  
+	  <t>If the AS utilizes client authentication to 
 	  identify and authenticate RSs, the <spanx style="verb">aud</spanx> claim MUST be 
 	  the "client_id" of the respective RS.</t>
+	  
+	  <t>If the AS adds one of the following claims to the token introspection response,
+	  the semantics is defined as follows:
+	  <list hangIndent="8" style="hanging">
+      	  <t hangText="iat">The <spanx style="verb">iat</spanx> claim indicates when this 
+      	  introspection response was issued by the AS.</t>
+          <t hangText="exp">The <spanx style="verb">exp</spanx> claim indicates when the 
+          access token passed in the introspection request will expire.</t>
+          <t hangText="jti">The <spanx style="verb">jti</spanx> claim is the identifier
+          of the access token passed in the introspection request.</t>
+        </list>
+	  </t>
 	  
       <t>This JWT MAY furthermore contain all claims defined in the "OAuth Token 
       Introspection Response" registry established by <xref target="RFC7662"/>.</t>
