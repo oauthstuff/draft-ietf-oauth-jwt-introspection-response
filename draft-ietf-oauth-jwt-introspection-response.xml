@@ -240,9 +240,11 @@ token=2YotnFZFEjr1zCsicMWpAA]]></artwork>
 	  <t>The <spanx style="verb">iss</spanx> MUST 
 	  be set to the issuer URL of the AS.</t> 
 	  
-	  <t>If the AS utilizes client authentication to 
-	  identify and authenticate RSs, the <spanx style="verb">aud</spanx> claim MUST be 
-	  the "client_id" of the respective RS.</t>
+	  <t>The value of the <spanx style="verb">aud</spanx> claims MUST identify 
+	  the resource server receiving the token introspection response. If the AS 
+	  utilizes client authentication to identify and authenticate resource servers, 
+	  the <spanx style="verb">aud</spanx> claim MUST be 
+	  the <spanx style="verb">client_id</spanx> of the respective RS.</t>
 	  
 	  <t>If the AS adds one of the following claims to the token introspection response,
 	  the semantics is defined as follows:
