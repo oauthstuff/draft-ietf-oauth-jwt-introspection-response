@@ -166,10 +166,11 @@
     <t>In order to support encrypted JWTs as 
     token introspection responses, the authorization server also MUST know the respective
     encryption keys and algorithms. </t>
-    <t>The authorization server MUST be able to determine
-    whether a certain RS is authorized to obtain data for a particular access token 
-    and what data it is entitled to get. For example, the AS could maintain a relationship
-    between scopes values and RSs.</t>
+    <t>The authorization server MUST be able to determine whether a certain RS is the 
+    audience of a particular access token, otherwise it is not authorized to obtain data 
+    for this access token, and what data it is entitled to get. The way the AS 
+    fulfils this requirement is at the discretion of the AS. The AS could, for example, 
+    maintain a relationship between scopes values and resource servers.</t>
     <t>The requirements given above require the authorization server 
     to maintain credentials and further configuration data on a per-RS-basis.</t> 
     <t>One way to setup and maintain RS configurations is to utilize dynamic client
@@ -223,8 +224,8 @@ token=2YotnFZFEjr1zCsicMWpAA]]></artwork>
       <t>The introspection endpoint responds with a JWT, setting the
           Content-Type header to "application/jwt".</t>
       
-      <t>If the access token is invalid, expired, has been revoked or is 
-      not intended to be consumed by the calling resource server, the 
+      <t>If the access token is invalid, expired, has been revoked, or is 
+      not intended to be consumed by the calling resource server (audience), the 
       authorization server will set the value of the response 
       claim <spanx style="verb">active</spanx> to <spanx style="verb">false</spanx>. 
       Otherwise, this claim is set to <spanx style="verb">true</spanx>.</t>
@@ -238,10 +239,7 @@ token=2YotnFZFEjr1zCsicMWpAA]]></artwork>
 	  be set to the issuer URL of the AS.</t> 
 	  
 	  <t>The value of the <spanx style="verb">aud</spanx> claims MUST identify 
-	  the resource server receiving the token introspection response. If the AS 
-	  utilizes client authentication to identify and authenticate resource servers, 
-	  the <spanx style="verb">aud</spanx> claim MUST be 
-	  the <spanx style="verb">client_id</spanx> of the respective RS.</t>
+	  the resource server receiving the token introspection response.</t>
 	  
 	  <t>If the AS adds one of the following claims to the token introspection response,
 	  the semantics is defined as follows:
