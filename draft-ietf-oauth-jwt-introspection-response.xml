@@ -124,17 +124,16 @@
       <t><xref target="RFC7662">OAuth 2.0 Token Introspection</xref> specifies a 
       method for a protected resource to query an OAuth 2.0 authorization server 
       to determine the state of an access token and obtain data associated with
-      the access token.
-      This allows deployments to implement identifier-based access tokens 
-      in an interoperable way.</t>
+      the access token. This allows deployments to implement identifier-based access 
+      tokens in an interoperable way.</t>
       <t>The introspection response, as specified in <xref target="RFC7662">OAuth
       2.0 Token Introspection</xref>, is a plain JSON object.
       However, there are use cases where the resource server requires stronger
-      assurance that the authorization server issued the access token,
-      including cases where the authorization server assumes liability for the
-      token's content. An example is a resource server using verified person
-      data to create certificates, which in turn are used to create qualified 
-      electronic signatures.</t>
+      assurance that the authorization server issued the token introspection 
+      response for an access token, including cases where the authorization server 
+      assumes liability for the content of the token introspection response. 
+      An example is a resource server using verified person data to create certificates, 
+      which in turn are used to create qualified electronic signatures.</t>
       <t>In such use cases it may be useful or even required to return a
       signed JWT as the introspection response. This specification extends the
       token introspection endpoint with the capability to return responses as
@@ -222,6 +221,18 @@ token=2YotnFZFEjr1zCsicMWpAA]]></artwork>
     <section anchor="jwt_response" title="JWT Response">
       <t>The introspection endpoint responds with a JWT, setting the
           Content-Type header to "application/jwt".</t>
+          
+     <t>This JWT is used to cryptographically protect the token 
+     introspection response but it is not the access token itself. Implementers
+     MUST consider the difference when processing token introspection metadata, 
+     especially <spanx style="verb">active</spanx> and <spanx style="verb">iat</spanx> 
+     (see below).
+     This specification registers the "application/token-introspection+jwt" media type, 
+     which is be used to indicate that the content is a introspection response in 
+     JWT format.</t>
+     
+     <t>The AS creates the token introspection response in JWT format as defined in the 
+     rest of this section.</t>  
       
       <t>If the access token is invalid, expired, has been revoked, or is 
       not intended to be consumed by the calling resource server (audience), the 
@@ -274,27 +285,39 @@ token=2YotnFZFEjr1zCsicMWpAA]]></artwork>
           <artwork><![CDATA[HTTP/1.1 200 OK
 Content-Type: application/jwt
 
-eyJraWQiOiIxIiwiYWxnIjoiUlMyNTYifQ.eyJpc3MiOiJodHRwczovL3NlcnZlci5l
-eGFtcGxlLmNvbS8iLCJhdWQiOiJzNkJoZFJrcXQzIiwianRpIjoidDFGb0NDYVpkNFh
-2NE9SSlVXVlVlVFpmc0toVzMwQ1FDcldERGp3WHk2dyIsImFjdGl2ZSI6dHJ1ZSwic2
-NvcGUiOiJyZWFkIHdyaXRlIGRvbHBoaW4iLCJleHAiOjE1MTQ3OTc5NDIwMDAsImlhd
-CI6MTUxNDc5NzgyMjAwMCwiY2xpZW50X2lkIjoiczZCaGRSa3F0MyIsInN1YiI6Ilo1
-TzN1cFBDODhRckFqeDAwZGlzIiwiZ2l2ZW5fbmFtZSI6IkpvaG4iLCJmYW1pbHlfbmF
-tZSI6IkRvZSIsImJpcnRoZGF0ZSI6IjE5ODItMDItMDEifQ.mQd15TFo0j26ppr788c
-gGhWDsuovpXoyLNixhCAFC5xRiy88m0Db9888BRUx7PKLZZ_F_-AL57HJJqIGLf9azo
-KXeCKff4MMp24MOeB8LPETqluuLjm0adl6W-8giIycQtYNI0_Lmu0GMc7HzNylYGHnT
-0txCLZaIAe_dZq0EoJo8eN-wEcmdgCDsJmSmq-bAKSuK1T3JhPgHz51Rb8wzKUhFwR9
-XTfriJCvkKXpYnAM4tXeZ0F13e2K0hQrZ8mhZXMgUwmJKgS7P_4NlheLrQfMIIFkaMg
-fRE5BbsMRc983TT8R49yat6Aml9GgSuBGzFkyFghHXgOrBl1P5QPLyhHiPgasROzu8o
-V_9LDx1CAjhWE864smL9RAySPrR_CEB66fycoppC9Eoci8QtF-15Pv45Xz9kmsQ3g9L
-oWwj-NozRjfhwruOFQvR6IbDeViIRZXPZ2DvpF_aDxXmByJ5f95PmpdtqSjf9yt7Izj
-hyfULuqI9Ww4oNUWNIEmsRJXni_KTVMGo6u8EPGhAQ7SZ5DM55HqAWctj_uto_iOXSQ
-4DyY7KkqjK4NRSEliQd9DPBDPP4zchNrwBqOYk8PzURwpKSLg3gltsAR_JyndCzNkZ0
-mRy13nVFKAzm9WSa3Olc17ngEXwApKDkun4mz80dXFWEa734o7IbTI0GBHVrQ]]></artwork>
+eyJ0eXAiOiJ0b2tlbi1pbnRyb3NwZWN0aW9uK2p3dCIsImFsZyI6IlJTMjU2In0.eyJ
+pc3MiOiJodHRwczovL3NlcnZlci5leGFtcGxlLmNvbS8iLCJhdWQiOiJzNkJoZFJrcX
+QzIiwianRpIjoidDFGb0NDYVpkNFh2NE9SSlVXVlVlVFpmc0toVzMwQ1FDcldERGp3W
+Hk2dyIsImFjdGl2ZSI6dHJ1ZSwic2NvcGUiOiJyZWFkIHdyaXRlIGRvbHBoaW4iLCJl
+eHAiOjE1MTQ3OTc5NDIwMDAsImlhdCI6MTUxNDc5NzgyMjAwMCwiY2xpZW50X2lkIjo
+iczZCaGRSa3F0MyIsInN1YiI6Ilo1TzN1cFBDODhRckFqeDAwZGlzIiwiZ2l2ZW5fbm
+FtZSI6IkpvaG4iLCJmYW1pbHlfbmFtZSI6IkRvZSIsImJpcnRoZGF0ZSI6IjE5ODItM
+DItMDEifQ.mnGNVJJwMaMR-drVHIyjOd7S5mScHT5tYC_sLdeaS9C4pkmiOgwHNGah9
+w_15kbotjDckotJNHpNTQCcE5nRC29L_jz5hSCNTMmK62fJdEcq0QVuCL_roeHzc-s1
+bjU2V2Qme6_2468zqcuhf1fhcieWxx9bDwFFwk3su0qdoF9RBa0HobWzy1ENU6MjiKH
+vmrnd5PkJenn1rJEt0EQTUuVE0vh2tQGhxbaZkQ34mLLgES5TCuBK7ALDXhT4aGCzxg
+3jLprs_jYTjCq2kugptseKaxsvti0TxOxmxLPcuy5xRxHDUzV2h9_VWVJRgM8y0vhLN
+v9XKDe4EQqaIFLA_YD4TBeyPV7Sm4xMQ-2OsSmAz0E2BY_b_s0WrFN2K8tspQhj2mnG
+v7Zz8O3zeE2gC59JR56aU_SNspGPbt8GvTwuL5ZZTCmiWKUzQ0ev4zVthUczQmK53dx
+Zl6ZxBfIRPV5k1GTPyEPbWehizbJT4JBSLlk-l8JvJcfL2USLtJgMLH1D01fww0IqN1
+ofHeHFUmZWB_LR7kGaJ8Kx_a9z4CaaVesW8jzgSmwA8K_pv9yJqqjnUhsh51c49OAgn
+cqwAahGrUhrN0dIBrd6sRXU3AiRpaah0MMNcjR2UJbEZKwnMyHTkBQAeZAe9vO9pKV8
+JOd0ziYBpAbEpYGE4p3wog4]]></artwork>
         </figure>	
         </t>
         <t>
-        The example response contains the following JSON document:
+        The example response header contains the following JSON document:
+        </t>
+        <t>
+        <figure>
+          <artwork><![CDATA[{
+  "typ": "token-introspection+jwt",
+  "alg": "RS256"
+}]]></artwork>
+        </figure>
+        </t>
+        <t>
+        The example response payload contains the following JSON document:
         </t>
         <t>
         <figure>
@@ -407,8 +430,14 @@ mRy13nVFKAzm9WSa3Olc17ngEXwApKDkun4mz80dXFWEa734o7IbTI0GBHVrQ]]></artwork>
       an end-user at a OpenID Connect relying party by passing the JWT as an ID
       token.</t>
       
-      <t>Such an attack can be prevented like any other token substitution
-      attack. The authorization server MUST include the claims
+      <t>Any RP processing the <spanx style="verb">typ</spanx> JWT header 
+      element will detect the attack since token introspection responses
+      in JWT format set this header to the value "token-introspection+jwt". 
+      Unfortunately, this is not well established practice yet.</t>
+      
+      <t>As an alternative approach, such an attack can be prevented like 
+      any other token substitution attack by audience restricting the JWT. 
+      The authorization server MUST include the claims
       <spanx style="verb">iss</spanx> and <spanx style="verb">aud</spanx> in
       each JWT introspection response, with the <spanx style="verb">iss</spanx> 
       value set to the authorization server's issuer URL and the 
@@ -803,6 +832,46 @@ mRy13nVFKAzm9WSa3Olc17ngEXwApKDkun4mz80dXFWEa734o7IbTI0GBHVrQ]]></artwork>
         </section>
       </section>     
 
+      <section anchor="ietf-media-typeIANA" title="Media Type Registration">
+      <t>This section registers the "application/token-introspection+jwt" media type
+   in the "Media Types" registry <xref target="IANA.MediaTypes"/> in the
+   manner described in <xref target="RFC6838"/>, which can be used to indicate that the
+   content is a token introspection response in JWT format.</t>
+        <section title="Registry Contents">
+          <t>
+            <list style='symbols'>
+              <t>Type name: application</t>
+              <t>Subtype name: token-introspection+jwt</t>
+   			  <t>Required parameters: N/A</t>
+              <t>Optional parameters: N/A</t>
+              <t>Encoding considerations: binary; A token introspection response is a JWT; JWT values are
+                 encoded as a series of base64url-encoded values (with trailing '='
+                 characters removed), some of which may be the empty string,
+                 separated by period ('.') characters.</t>
+              <t>Security considerations: See Section 7 of this specification</t>
+              <t>Interoperability considerations: N/A</t>
+              <t>Published specification: Section 4 of this specification</t>
+              <t>Applications that use this media type: Applications that produce and consume 
+                 OAuth Token Introspection Responses in JWT format</t>
+              <t>Fragment identifier considerations: N/A</t>
+              <t>Additional information:
+                 <list style='symbols'>
+                   <t>Magic number(s): N/A</t>
+                   <t>File extension(s): N/A</t>
+                   <t>Macintosh file type code(s): N/A</t>
+                 </list>
+              </t>
+              <t>Person &amp; email address to contact for further information: Torsten Lodderstedt, 
+                 torsten@lodderstedt.net</t>
+              <t>Intended usage: COMMON</t>
+              <t>Restrictions on usage: none</t>
+              <t>Author: Torsten Lodderstedt, torsten@lodderstedt.net</t>
+              <t>Change controller: IESG</t>
+              <t>Provisional registration?  No</t>              
+            </list>
+          </t>
+        </section>
+      </section>  
 
     </section>
     
@@ -815,6 +884,7 @@ mRy13nVFKAzm9WSa3Olc17ngEXwApKDkun4mz80dXFWEa734o7IbTI0GBHVrQ]]></artwork>
       <?rfc include="reference.RFC.2119"?>
       <?rfc include="reference.RFC.3966"?>       
       <?rfc include="reference.RFC.5322"?>
+      <?rfc include="reference.RFC.6838"?>      
       <?rfc include="reference.RFC.7519"?>
       <?rfc include="reference.RFC.7525"?>
       <?rfc include="reference.RFC.8259"?>   
@@ -867,6 +937,16 @@ mRy13nVFKAzm9WSa3Olc17ngEXwApKDkun4mz80dXFWEa734o7IbTI0GBHVrQ]]></artwork>
           <date day="8" month="Nov" year="2014"/>
         </front>
       </reference>
+
+<reference anchor="IANA.MediaTypes" target="http://www.iana.org/assignments/media-types">
+	<front>
+	  <title>Media Types</title>
+	  <author fullname="IANA">
+	    <organization abbrev="ISO">IANA</organization>
+	  </author>
+          <date/>
+	</front>
+</reference>
 
 <reference anchor="ISO3166-1" target="https://www.iso.org/standard/63545.html">
 	<front>
