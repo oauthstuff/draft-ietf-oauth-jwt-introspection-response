@@ -219,17 +219,23 @@ token=2YotnFZFEjr1zCsicMWpAA]]></artwork>
 	</section>
 	
     <section anchor="jwt_response" title="JWT Response">
+    
       <t>The introspection endpoint responds with a JWT, setting the
-          Content-Type header to "application/jwt".</t>
+          Content-Type header to "application/jwt". This JWT is a cryptographically 
+          protected representation of the token introspection response as defined in
+          <xref target="RFC7662"/>.</t>
           
-     <t>This JWT is used to cryptographically protect the token 
-     introspection response but it is not the access token itself. Implementers
-     MUST consider the difference when processing token introspection metadata, 
-     especially <spanx style="verb">active</spanx> and <spanx style="verb">iat</spanx> 
-     (see below).
-     This specification registers the "application/token-introspection+jwt" media type, 
+     <t>Note: Although the JWT format is widely used as access token format, the JWT 
+     returned in the introspection response is not an alternative representation of 
+     the introspected access token and it's not intended to be used as an access token.</t>
+     
+     <t>This specification registers the "application/token-introspection+jwt" media type, 
      which is be used to indicate that the content is a introspection response in 
      JWT format.</t>
+      
+     <t>JWT metadata values, such as <spanx style="verb">iat</spanx>, might differ between 
+     the token introspection response in JWT format and the introspected access 
+     token (see below).</t>
      
      <t>The AS creates the token introspection response in JWT format as defined in the 
      rest of this section.</t>  
