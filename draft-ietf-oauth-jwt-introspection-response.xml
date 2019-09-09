@@ -114,7 +114,7 @@
 		-->
 
     <abstract>
-      <t>This draft proposes an additional JSON Web Token (JWT) based response 
+      <t>This specification proposes an additional JSON Web Token (JWT) based response 
       for OAuth 2.0 Token Introspection.</t>
     </abstract>
   </front>
@@ -157,7 +157,7 @@
     user and other data as input to its access control decisions and service delivery.
     The authorization server relies on the resource server to handle the provided data
     appropriately.</t> 
-    <t>In the context of this draft, the Token Introspection Endpoint is used to convey
+    <t>In the context of this specification, the Token Introspection Endpoint is used to convey
     such security data and potentially also privacy sensitive data related to an access
     token.</t>
     <t>In order to process the introspection requests in a secure and
@@ -183,8 +183,8 @@
     <t>The AS MUST restrict the use of client credentials by a RS to the calls
     it requires, e.g. the AS MAY restrict such a client to call
     the token introspection endpoint only. How the AS implements this restriction
-    is beyond the scope of this draft.</t>
-    <t>This draft further specifies client metadata to manage the
+    is beyond the scope of this specification.</t>
+    <t>This specification further specifies client metadata to manage the
     configuration options required to encrypt token introspection response JWTs.</t>
     </section>
 
@@ -225,7 +225,7 @@ token=2YotnFZFEjr1zCsicMWpAA]]></artwork>
       
       <t>If the access token is invalid, expired, has been revoked, or is 
       not intended to be consumed by the calling resource server (audience), the 
-      authorization server will set the value of the response 
+      authorization server MUST set the value of the response 
       claim <spanx style="verb">active</spanx> to <spanx style="verb">false</spanx>. 
       Otherwise, this claim is set to <spanx style="verb">true</spanx>.</t>
           
@@ -248,7 +248,8 @@ token=2YotnFZFEjr1zCsicMWpAA]]></artwork>
           <t hangText="exp">The <spanx style="verb">exp</spanx> claim indicates when the 
           access token passed in the introspection request will expire.</t>
           <t hangText="jti">The <spanx style="verb">jti</spanx> claim is an identifier
-          for the access token passed in the introspection request.</t>
+          for the access token passed in the introspection request. This identifier
+          MUST be stable for all introspection calls for a given access token.</t>
         </list>
 	  </t>
 	  
@@ -331,7 +332,7 @@ mRy13nVFKAzm9WSa3Olc17ngEXwApKDkun4mz80dXFWEa734o7IbTI0GBHVrQ]]></artwork>
       secure the JWT for a particular introspection response. This decision can
       be based on registered metadata parameters for the resource server,
       supplied via dynamic client registration with the resource server posing
-      as the client, as specified by this draft.</t>
+      as the client, as specified by this specification.</t>
       <t>The parameter names follow the pattern established by
       <xref target="OpenID.Registration">OpenID Connect
       Dynamic Client Registration</xref> for configuring signing and encryption
