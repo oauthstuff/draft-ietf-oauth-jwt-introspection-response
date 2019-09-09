@@ -114,7 +114,7 @@
 		-->
 
     <abstract>
-      <t>This draft proposes an additional JSON Web Token (JWT) based response 
+      <t>This specification proposes an additional JSON Web Token (JWT) based response 
       for OAuth 2.0 Token Introspection.</t>
     </abstract>
   </front>
@@ -139,6 +139,8 @@
       signed JWT as the introspection response. This specification extends the
       token introspection endpoint with the capability to return responses as
       JWTs.</t>
+      </section>
+      
        <section anchor="RNC" title="Requirements Notation and Conventions">
 <t>
   The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
@@ -148,35 +150,123 @@
   when, and only when, they appear in all capitals, as shown here.
 </t>
     </section>
+    
+    <section anchor="as-rs-relationshio" title="Resource server management">
+    <t>The authorization server and the resource server maintain a strong two-way trust relationship.
+    The resource server relies on the authorization server to obtain authorization,
+    user and other data as input to its access control decisions and service delivery.
+    The authorization server relies on the resource server to handle the provided data
+    appropriately.</t> 
+    <t>In the context of this specification, the Token Introspection Endpoint is used to convey
+    such security data and potentially also privacy sensitive data related to an access
+    token.</t>
+    <t>In order to process the introspection requests in a secure and
+    privacy-preserving manner, the authorization server MUST be able to identify, 
+    authenticate and authorize resource servers.</t>
+    <t>To support encrypted token introspection response JWTs,
+    the authorization server MUST also be provided with the respective
+    resource server encryption keys and algorithms.</t>
+    <t>The authorization server MUST be able to determine whether an RS is the
+    audience for a particular access token and what data it is entitled to receive,
+    otherwise the RS is not authorized to obtain data for the access token.
+    The AS has the discretion how to fulfil this requirement. The AS could, for example,
+    maintain a mapping between scopes values and resource servers.</t>
+    <t>The requirements given above imply that the authorization server
+    maintains credentials and other configuration data for each RS.</t>
+    <t>One way is by utilizing dynamic client registration <xref target="RFC7591"/>
+    and treating every RS as an OAuth client. In this case, the authorization server
+    is assumed to at least maintain "client_id" and "token_endpoint_auth_method"
+    with complementary authentication method metadata, such as "jwks" or "client_secret".
+    In cases where the AS needs to acquire consent to transmit data to a RS, the following
+    client metadata fields are recommended: "client_name", "client_uri", "contacts",
+    "tos_uri", "policy_uri".</t>
+    <t>The AS MUST restrict the use of client credentials by a RS to the calls
+    it requires, e.g. the AS MAY restrict such a client to call
+    the token introspection endpoint only. How the AS implements this restriction
+    is beyond the scope of this specification.</t>
+    <t>This specification further specifies client metadata to manage the
+    configuration options required to encrypt token introspection response JWTs.</t>
     </section>
 
 	<section anchor="jwt_request" title="Requesting a JWT Response">
+    
 	<t>A resource server requests to receive a JWT introspection response by
         including an Accept header with content type "application/jwt" in the
         introspection request.</t>
+        
+    <t>Authentication at the token introspection endpoint can utilize client authentication
+    methods or a separate access tokens issued to the resource server. Whether a resource
+    server is required to authenticate is determined by the respective RS-specific
+    policy at the AS.</t>
 
-      <t>The following is a non-normative example request:</t>
+      <t>The following is a non-normative example request using 
+      client authentication:</t>
 	  <t>
 	  	<figure>
           <artwork><![CDATA[POST /introspect HTTP/1.1
 Host: server.example.com
 Accept: application/jwt
+Authorization: Basic czZCaGRSa3F0MzpnWDFmQmF0M2JW
 Content-Type: application/x-www-form-urlencoded
 
 token=2YotnFZFEjr1zCsicMWpAA]]></artwork>
         </figure>
 	  </t>
+	  
+	  <t>If required by its policy, the authorization server MUST authenticate the 
+	  caller and check its authorization to use the token introspection 
+	  endpoint.</t>
+
 	</section>
 	
     <section anchor="jwt_response" title="JWT Response">
       <t>The introspection endpoint responds with a JWT, setting the
           Content-Type header to "application/jwt".</t>
-      <t>This JWT MUST contain the claims 
+      
+      <t>If the access token is invalid, expired, has been revoked, or is 
+      not intended to be consumed by the calling resource server (audience), the 
+      authorization server MUST set the value of the response 
+      claim <spanx style="verb">active</spanx> to <spanx style="verb">false</spanx>. 
+      Otherwise, this claim is set to <spanx style="verb">true</spanx>.</t>
+          
+      <t>If the access token is considered active, it MUST contain the claims 
 	  <spanx style="verb">iss</spanx> and <spanx style="verb">aud</spanx> in order to 
 	  prevent misuse of the JWT as ID or access token 
 	  (see <xref target="Cross-JWT_Confusion"/>).</t>
-      <t>This JWT MAY furthermore contain all claims defined in the "OAuth Token 
-      Introspection Response" registry established by <xref target="RFC7662"/>.</t>
+	  
+	  <t>The <spanx style="verb">iss</spanx> MUST 
+	  be set to the issuer URL of the AS.</t> 
+	  
+	  <t>The value of the <spanx style="verb">aud</spanx> claims MUST identify 
+	  the resource server receiving the token introspection response.</t>
+	  
+	  <t>If the AS adds the following claims to the token introspection response
+	  their meaning is defined as follows:
+	  <list hangIndent="8" style="hanging">
+      	  <t hangText="iat">The <spanx style="verb">iat</spanx> claim indicates when the
+      	  introspection response was issued by the AS.</t>
+          <t hangText="exp">The <spanx style="verb">exp</spanx> claim indicates when the 
+          access token passed in the introspection request will expire.</t>
+          <t hangText="jti">The <spanx style="verb">jti</spanx> claim is an identifier
+          for the access token passed in the introspection request. This identifier
+          MUST be stable for all introspection calls for a given access token.</t>
+        </list>
+	  </t>
+	  
+	  <t>Further content of the introspection response is determined by the
+      RS-specific policy at the AS.</t>
+      
+      <t>If possible, the AS MUST narrow down the <spanx style="verb">scope</spanx> 
+      value to the scopes relevant to the particular RS.</t>
+      
+      <t>The JWT formatted introspection response MAY further contain claims
+      defined in the "OAuth Token Introspection Response" registry established by 
+      <xref target="RFC7662"/>.</t>
+      
+      <t>The AS determines based on RS-specific policy what user data
+      to return in the introspection response. The AS MUST ensure
+      that the release of any privacy-sensitive data is legally based.</t>
+      
       <t>The following is a non-normative example response 
       (with line breaks for display purposes only):</t>
 	  <t>
@@ -184,18 +274,23 @@ token=2YotnFZFEjr1zCsicMWpAA]]></artwork>
           <artwork><![CDATA[HTTP/1.1 200 OK
 Content-Type: application/jwt
 
-eyJraWQiOiIxIiwiYWxnIjoiUlMyNTYifQ.eyJzdWIiOiJaNU8zdXBQQzg4UXJBa
-ngwMGRpcyIsImF1ZCI6Imh0dHBzOlwvXC9wcm90ZWN0ZWQuZXhhbXBsZS5uZXRcL
-3Jlc291cmNlIiwiZXh0ZW5zaW9uX2ZpZWxkIjoidHdlbnR5LXNldmVuIiwic2Nvc
-GUiOiJyZWFkIHdyaXRlIGRvbHBoaW4iLCJpc3MiOiJodHRwczpcL1wvc2VydmVyL
-mV4YW1wbGUuY29tXC8iLCJhY3RpdmUiOnRydWUsImV4cCI6MTQxOTM1NjIzOCwia
-WF0IjoxNDE5MzUwMjM4LCJjbGllbnRfaWQiOiJsMjM4ajMyM2RzLTIzaWo0Iiwid
-XNlcm5hbWUiOiJqZG9lIn0.HEQHf05vqVvWVnWuEjbzUnPz6JDQVR69QkxgzBNq5
-kk-sK54ieg1STazXGsdFAT8nUhiiV1f_Z4HOKNnBs8TLKaFXokhA0MqNBOYI--2u
-nVHDqI_RPmC3p0NmP02Xmv4hzxFmTmpgjSy3vpKQDihOjhwNBh7G81JNaJqjJQTR
-v_1dHUPJotQjMK3k8_5FyiO2p64Y2VyxyQn1VWVlgOHlJwhj6BaGHk4Qf5F8DHQZ
-1WCPg2p_-hwfINfXh1_buSjxyDRF4oe9pKy6ZB3ejh9qIMm-WrwltuU1uWMXxN6e
-S6tUtpKo8UCHBwLWCHmJN7KU6ZojmaISspdS23lELAlyw]]></artwork>
+eyJraWQiOiIxIiwiYWxnIjoiUlMyNTYifQ.eyJpc3MiOiJodHRwczovL3NlcnZlci5l
+eGFtcGxlLmNvbS8iLCJhdWQiOiJzNkJoZFJrcXQzIiwianRpIjoidDFGb0NDYVpkNFh
+2NE9SSlVXVlVlVFpmc0toVzMwQ1FDcldERGp3WHk2dyIsImFjdGl2ZSI6dHJ1ZSwic2
+NvcGUiOiJyZWFkIHdyaXRlIGRvbHBoaW4iLCJleHAiOjE1MTQ3OTc5NDIwMDAsImlhd
+CI6MTUxNDc5NzgyMjAwMCwiY2xpZW50X2lkIjoiczZCaGRSa3F0MyIsInN1YiI6Ilo1
+TzN1cFBDODhRckFqeDAwZGlzIiwiZ2l2ZW5fbmFtZSI6IkpvaG4iLCJmYW1pbHlfbmF
+tZSI6IkRvZSIsImJpcnRoZGF0ZSI6IjE5ODItMDItMDEifQ.mQd15TFo0j26ppr788c
+gGhWDsuovpXoyLNixhCAFC5xRiy88m0Db9888BRUx7PKLZZ_F_-AL57HJJqIGLf9azo
+KXeCKff4MMp24MOeB8LPETqluuLjm0adl6W-8giIycQtYNI0_Lmu0GMc7HzNylYGHnT
+0txCLZaIAe_dZq0EoJo8eN-wEcmdgCDsJmSmq-bAKSuK1T3JhPgHz51Rb8wzKUhFwR9
+XTfriJCvkKXpYnAM4tXeZ0F13e2K0hQrZ8mhZXMgUwmJKgS7P_4NlheLrQfMIIFkaMg
+fRE5BbsMRc983TT8R49yat6Aml9GgSuBGzFkyFghHXgOrBl1P5QPLyhHiPgasROzu8o
+V_9LDx1CAjhWE864smL9RAySPrR_CEB66fycoppC9Eoci8QtF-15Pv45Xz9kmsQ3g9L
+oWwj-NozRjfhwruOFQvR6IbDeViIRZXPZ2DvpF_aDxXmByJ5f95PmpdtqSjf9yt7Izj
+hyfULuqI9Ww4oNUWNIEmsRJXni_KTVMGo6u8EPGhAQ7SZ5DM55HqAWctj_uto_iOXSQ
+4DyY7KkqjK4NRSEliQd9DPBDPP4zchNrwBqOYk8PzURwpKSLg3gltsAR_JyndCzNkZ0
+mRy13nVFKAzm9WSa3Olc17ngEXwApKDkun4mz80dXFWEa734o7IbTI0GBHVrQ]]></artwork>
         </figure>	
         </t>
         <t>
@@ -203,18 +298,19 @@ S6tUtpKo8UCHBwLWCHmJN7KU6ZojmaISspdS23lELAlyw]]></artwork>
         </t>
         <t>
         <figure>
-          <artwork><![CDATA[{
-  "sub": "Z5O3upPC88QrAjx00dis",
-  "aud": "https://protected.example.net/resource",
-  "scope": "read write dolphin",
-  "iss": "https://server.example.com/",
-  "active": true,
-  "exp": 1419356238,
-  "iat": 1419350238,
-  "client_id": "l238j323ds-23ij4",
-  "given_name": "John",
-  "family_name":"Doe",
-  "birthdate":"1982-02-01"
+          <artwork><![CDATA[{  
+   "iss":"https://server.example.com/",
+   "aud":"s6BhdRkqt3",
+   "jti": "t1FoCCaZd4Xv4ORJUWVUeTZfsKhW30CQCrWDDjwXy6w",
+   "active":true,
+   "scope":"read write dolphin",
+   "exp":1514797942000,
+   "iat":1514797822000,
+   "client_id":"s6BhdRkqt3",
+   "sub":"Z5O3upPC88QrAjx00dis",
+   "given_name":"John",
+   "family_name":"Doe",
+   "birthdate":"1982-02-01"
 }]]></artwork>
         </figure>
 
@@ -236,7 +332,7 @@ S6tUtpKo8UCHBwLWCHmJN7KU6ZojmaISspdS23lELAlyw]]></artwork>
       secure the JWT for a particular introspection response. This decision can
       be based on registered metadata parameters for the resource server,
       supplied via dynamic client registration with the resource server posing
-      as the client, as defined by this draft.</t>
+      as the client, as specified by this specification.</t>
       <t>The parameter names follow the pattern established by
       <xref target="OpenID.Registration">OpenID Connect
       Dynamic Client Registration</xref> for configuring signing and encryption
