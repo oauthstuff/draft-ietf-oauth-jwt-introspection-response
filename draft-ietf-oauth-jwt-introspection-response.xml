@@ -152,41 +152,40 @@
     </section>
     
     <section anchor="as-rs-relationshio" title="Resource server management">
-    <t>Authorization server and resource server have a strong trust relationsship.
-    The resource server relies in the authorization server to provide the authorization 
-    and user data it basis its access control decisions and service delivery on. 
-    And the authorization server relies on the resource server to handle the data provided
+    <t>The authorization server and the resource server maintain a strong two-way trust relationship.
+    The resource server relies on the authorization server to obtain authorization,
+    user and other data as input to its access control decisions and service delivery.
+    The authorization server relies on the resource server to handle the provided data
     appropriately.</t> 
-    <t>In the context of this draft, the Token Introspection Endpoint is used to convey 
-    this security and, potentially, privacy sensitive data related to a particular access 
+    <t>In the context of this draft, the Token Introspection Endpoint is used to convey
+    such security data and potentially also privacy sensitive data related to an access
     token.</t>
-    <t>As a foundation to process all introspection requests in a secure and 
+    <t>In order to process the introspection requests in a secure and
     privacy-preserving manner, the authorization server MUST be able to identify, 
     authenticate and authorize resource servers.</t>
-    <t>In order to support encrypted JWTs as 
-    token introspection responses, the authorization server also MUST know the respective
-    encryption keys and algorithms. </t>
-    <t>The authorization server MUST be able to determine whether a certain RS is the 
-    audience of a particular access token, otherwise it is not authorized to obtain data 
-    for this access token, and what data it is entitled to get. The way the AS 
-    fulfils this requirement is at the discretion of the AS. The AS could, for example, 
-    maintain a relationship between scopes values and resource servers.</t>
-    <t>The requirements given above require the authorization server 
-    to maintain credentials and further configuration data on a per-RS-basis.</t> 
-    <t>One way to setup and maintain RS configurations is to utilize dynamic client
-    registration <xref target="RFC7591"/> and treat every RS as an OAuth client. In this case, 
-    the authorization server is assumed to at least maintain "client_id" and 
-    "token_endpoint_auth_method" as well as further data specific to a certain endpoint 
-    authentication method, such as "jwks" or "client_secret". In cases 
-    where the AS needs to acquire consent for data tranmission to a RS, the following 
-    client metadata fields are recommended to be utilized: "client_name", "client_uri", 
-    "contacts", "tos_uri", "policy_uri".</t>
-   <t>This draft defines further client metadata suited to manage the 
-    configuration options required to encrypt token introspection responses.</t>
-    <t>The AS MUST restrict the permissions of the client credentials used by a 
-    RS to the required functions, e.g. the AS MAY restrict such a client to call
-    the token introspection endpoint only. The way the AS maintains and determines 
-    the client credentials authorization is out of scope of this draft.</t>
+    <t>To support encrypted token introspection response JWTs,
+    the authorization server MUST also be provided with the respective
+    resource server encryption keys and algorithms.</t>
+    <t>The authorization server MUST be able to determine whether an RS is the
+    audience for a particular access token and what data it is entitled to receive,
+    otherwise the RS is not authorized to obtain data for the access token.
+    The AS has the discretion how to fulfil this requirement. The AS could, for example,
+    maintain a mapping between scopes values and resource servers.</t>
+    <t>The requirements given above imply that the authorization server
+    maintains credentials and other configuration data for each RS.</t>
+    <t>One way is by utilizing dynamic client registration <xref target="RFC7591"/>
+    and treating every RS as an OAuth client. In this case, the authorization server
+    is assumed to at least maintain "client_id" and "token_endpoint_auth_method"
+    with complementary authentication method metadata, such as "jwks" or "client_secret".
+    In cases where the AS needs to acquire consent to transmit data to a RS, the following
+    client metadata fields are recommended: "client_name", "client_uri", "contacts",
+    "tos_uri", "policy_uri".</t>
+    <t>The AS MUST restrict the use of client credentials by a RS to the calls
+    it requires, e.g. the AS MAY restrict such a client to call
+    the token introspection endpoint only. How the AS implements this restriction
+    is beyond the scope of this draft.</t>
+    <t>This draft further specifies client metadata to manage the
+    configuration options required to encrypt token introspection response JWTs.</t>
     </section>
 
 	<section anchor="jwt_request" title="Requesting a JWT Response">
@@ -241,32 +240,31 @@ token=2YotnFZFEjr1zCsicMWpAA]]></artwork>
 	  <t>The value of the <spanx style="verb">aud</spanx> claims MUST identify 
 	  the resource server receiving the token introspection response.</t>
 	  
-	  <t>If the AS adds one of the following claims to the token introspection response,
-	  the semantics is defined as follows:
+	  <t>If the AS adds the following claims to the token introspection response
+	  their meaning is defined as follows:
 	  <list hangIndent="8" style="hanging">
-      	  <t hangText="iat">The <spanx style="verb">iat</spanx> claim indicates when this 
+      	  <t hangText="iat">The <spanx style="verb">iat</spanx> claim indicates when the
       	  introspection response was issued by the AS.</t>
           <t hangText="exp">The <spanx style="verb">exp</spanx> claim indicates when the 
           access token passed in the introspection request will expire.</t>
-          <t hangText="jti">The <spanx style="verb">jti</spanx> claim is the identifier
-          of the access token passed in the introspection request.</t>
+          <t hangText="jti">The <spanx style="verb">jti</spanx> claim is an identifier
+          for the access token passed in the introspection request.</t>
         </list>
 	  </t>
 	  
-	  <t>Further contents of the introspection response are determined by the
-      RS-specific policy set up at the AS.</t> 
+	  <t>Further content of the introspection response is determined by the
+      RS-specific policy at the AS.</t>
       
       <t>If possible, the AS MUST narrow down the <spanx style="verb">scope</spanx> 
-      value to the scopes relevant for the particular RS.</t> 
+      value to the scopes relevant to the particular RS.</t>
       
-      <t>The JWT formated introspection response MAY contain further claims as
+      <t>The JWT formatted introspection response MAY further contain claims
       defined in the "OAuth Token Introspection Response" registry established by 
       <xref target="RFC7662"/>.</t>
       
-      <t>The AS determines based on the RS-specific policy what user data
-      needs to be returned in the introspection response. The AS MUST ensure 
-      that the release of any privacy-sensitive data is based on an appropriate 
-      legal basis.</t>
+      <t>The AS determines based on RS-specific policy what user data
+      to return in the introspection response. The AS MUST ensure
+      that the release of any privacy-sensitive data is legally based.</t>
       
       <t>The following is a non-normative example response 
       (with line breaks for display purposes only):</t>
@@ -333,7 +331,7 @@ mRy13nVFKAzm9WSa3Olc17ngEXwApKDkun4mz80dXFWEa734o7IbTI0GBHVrQ]]></artwork>
       secure the JWT for a particular introspection response. This decision can
       be based on registered metadata parameters for the resource server,
       supplied via dynamic client registration with the resource server posing
-      as the client, as defined by this draft.</t>
+      as the client, as specified by this draft.</t>
       <t>The parameter names follow the pattern established by
       <xref target="OpenID.Registration">OpenID Connect
       Dynamic Client Registration</xref> for configuring signing and encryption
