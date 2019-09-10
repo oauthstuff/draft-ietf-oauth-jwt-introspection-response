@@ -229,16 +229,13 @@ token=2YotnFZFEjr1zCsicMWpAA]]></artwork>
      returned in the introspection response is not an alternative representation of 
      the introspected access token and it's not intended to be used as an access token.</t>
      
-     <t>This specification registers the "application/token-introspection+jwt" media type, 
-     which is be used to indicate that the content is a introspection response in 
-     JWT format.</t>
-      
      <t>JWT metadata values, such as <spanx style="verb">iat</spanx>, might differ between 
      the token introspection response in JWT format and the introspected access 
      token (see below).</t>
      
-     <t>The AS creates the token introspection response in JWT format as defined in the 
-     rest of this section.</t>  
+     <t>This specification registers the "application/token-introspection+jwt" media type, 
+     which is used as value of the <spanx style="verb">typ</spanx> header parameter of the 
+     JWT to indicate that the content is a introspection response.</t>
       
       <t>If the access token is invalid, expired, has been revoked, or is 
       not intended to be consumed by the calling resource server (audience), the 
