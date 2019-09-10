@@ -114,7 +114,7 @@
 		-->
 
     <abstract>
-      <t>This specification proposes an additional JSON Web Token (JWT) based response 
+      <t>This specification proposes an additional JSON Web Token (JWT) secured response
       for OAuth 2.0 Token Introspection.</t>
     </abstract>
   </front>
@@ -124,7 +124,7 @@
       <t><xref target="RFC7662">OAuth 2.0 Token Introspection</xref> specifies a 
       method for a protected resource to query an OAuth 2.0 authorization server 
       to determine the state of an access token and obtain data associated with
-      the access token. This allows deployments to implement identifier-based access 
+      the access token. This enables deployments to implement identifier-based access
       tokens in an interoperable way.</t>
       <t>The introspection response, as specified in <xref target="RFC7662">OAuth
       2.0 Token Introspection</xref>, is a plain JSON object.
@@ -183,7 +183,7 @@
     it requires, e.g. the AS MAY restrict such a client to call
     the token introspection endpoint only. How the AS implements this restriction
     is beyond the scope of this specification.</t>
-    <t>This specification further specifies client metadata to manage the
+    <t>This specification further introduces client metadata to manage the
     configuration options required to encrypt token introspection response JWTs.</t>
     </section>
 
@@ -222,12 +222,12 @@ token=2YotnFZFEjr1zCsicMWpAA]]></artwork>
     
       <t>The introspection endpoint responds with a JWT, setting the
           Content-Type header to "application/jwt". This JWT is a cryptographically 
-          protected representation of the token introspection response as defined in
+          protected representation of the token introspection response as specified in
           <xref target="RFC7662"/>.</t>
           
-     <t>Note: Although the JWT format is widely used as access token format, the JWT 
+     <t>Note: Although the JWT format is widely used as an access token format, the JWT
      returned in the introspection response is not an alternative representation of 
-     the introspected access token and it's not intended to be used as an access token.</t>
+     the introspected access token and is not intended to be used as an access token.</t>
      
      <t>JWT metadata values, such as <spanx style="verb">iat</spanx>, might differ between 
      the token introspection response in JWT format and the introspected access 
@@ -235,7 +235,7 @@ token=2YotnFZFEjr1zCsicMWpAA]]></artwork>
      
      <t>This specification registers the "application/token-introspection+jwt" media type, 
      which is used as value of the <spanx style="verb">typ</spanx> header parameter of the 
-     JWT to indicate that the content is a introspection response.</t>
+     JWT to indicate that the payload is an introspection response.</t>
       
       <t>If the access token is invalid, expired, has been revoked, or is 
       not intended to be consumed by the calling resource server (audience), the 
@@ -245,7 +245,7 @@ token=2YotnFZFEjr1zCsicMWpAA]]></artwork>
           
       <t>If the access token is considered active, it MUST contain the claims 
 	  <spanx style="verb">iss</spanx> and <spanx style="verb">aud</spanx> in order to 
-	  prevent misuse of the JWT as ID or access token 
+	  prevent misuse of the JWT as an ID or access token
 	  (see <xref target="Cross-JWT_Confusion"/>).</t>
 	  
 	  <t>The <spanx style="verb">iss</spanx> MUST 
@@ -261,7 +261,7 @@ token=2YotnFZFEjr1zCsicMWpAA]]></artwork>
       	  introspection response was issued by the AS.</t>
           <t hangText="exp">The <spanx style="verb">exp</spanx> claim indicates when the 
           access token passed in the introspection request will expire.</t>
-          <t hangText="jti">The <spanx style="verb">jti</spanx> claim is an identifier
+          <t hangText="jti">The <spanx style="verb">jti</spanx> claim is a unique identifier
           for the access token passed in the introspection request. This identifier
           MUST be stable for all introspection calls for a given access token.</t>
         </list>
@@ -358,7 +358,7 @@ JOd0ziYBpAbEpYGE4p3wog4]]></artwork>
       secure the JWT for a particular introspection response. This decision can
       be based on registered metadata parameters for the resource server,
       supplied via dynamic client registration with the resource server posing
-      as the client, as specified by this specification.</t>
+      as the client, as specified here.</t>
       <t>The parameter names follow the pattern established by
       <xref target="OpenID.Registration">OpenID Connect
       Dynamic Client Registration</xref> for configuring signing and encryption
@@ -434,12 +434,12 @@ JOd0ziYBpAbEpYGE4p3wog4]]></artwork>
       token.</t>
       
       <t>Any RP processing the <spanx style="verb">typ</spanx> JWT header 
-      element will detect the attack since token introspection responses
+      element should detect the attack since token introspection responses
       in JWT format set this header to the value "token-introspection+jwt". 
-      Unfortunately, this is not well established practice yet.</t>
+      Unfortunately, this is not a well established practice yet.</t>
       
       <t>As an alternative approach, such an attack can be prevented like 
-      any other token substitution attack by audience restricting the JWT. 
+      any other token substitution attack by restricting the audience of the JWT.
       The authorization server MUST include the claims
       <spanx style="verb">iss</spanx> and <spanx style="verb">aud</spanx> in
       each JWT introspection response, with the <spanx style="verb">iss</spanx> 
@@ -455,7 +455,7 @@ JOd0ziYBpAbEpYGE4p3wog4]]></artwork>
       
       <t>Resource servers utilizing JWTs to represent self-contained access
       tokens could be susceptible to replay attacks. Resource servers
-      should therefore apply proper counter measures against replay as 
+      should therefore apply proper countermeasures against replay as
       described in <xref target="I-D.ietf-oauth-security-topics"/>, 
       section 2.2.</t>
       <t>JWT Confusion and other attacks involving JWTs are discussed in
@@ -475,7 +475,7 @@ JOd0ziYBpAbEpYGE4p3wog4]]></artwork>
       An attacker could try to circumvent this measure by requesting a plain 
       JSON response, using an Accept header with the content type set
       to, for example, "application/json" instead of "application/jwt". To prevent this
-      attack the authorization server MUST NOT serve requests with content type
+      attack the authorization server MUST NOT serve requests with a content type
       other than "application/jwt" if the resource server is set up to receive 
       encrypted responses (see also <xref target="jwt_response"/>).</t>
       </section>
@@ -496,7 +496,7 @@ JOd0ziYBpAbEpYGE4p3wog4]]></artwork>
             
       <section title="Data Minimization">
       <t>The authorisation server determines the token data a resource server is 
-      allowed to see based on the resource server’s client_id and suitable token data, 
+      allowed to receive based on the resource server’s client_id and suitable token data,
       e.g. the scope value. </t>
       </section>
 
