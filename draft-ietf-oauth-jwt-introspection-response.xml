@@ -502,13 +502,28 @@ JOd0ziYBpAbEpYGE4p3wog4]]></artwork>
       activity to be logged and audited must require all requests to the token
       introspection endpoint to be authenticated.</t>
       </section>
-            
-      <section title="Data Minimization">
-      <t>The authorisation server determines the token data a resource server is 
-      allowed to receive based on the resource server’s client_id and suitable token data,
-      e.g. the scope value. </t>
-      </section>
 
+    </section>
+    
+    <section anchor="privacy" title="Privacy Considerations">
+     <t>The token introspection response can be used to transfer personal identifiable 
+     information from the AS to the RS. The AS MUST ensure a legal basis exists for this
+     data transfer before any data is released to a particular RS. The way this legal 
+     basis is established might vary among jurisdictions and MUST consider
+     the legal entities involved.</t>
+    <t>For example, the classical way to establish the legal basis is an explicit user 
+     consent gathered and captured by the AS in the authorization flow from the 
+     resource owner.</t>
+     <t>It is also possible that the legal basis is established out of band, e.g. in 
+     an explicit contract or by the client gathering the resource owner's consent.</t> 
+     <t>If AS and RS belong to the same legal entity (1st party scenario), there is 
+     potentially no need for an explicit user consent but the terms of service and policy
+     of the respective service provider MUST be enforced at all times.</t>
+     <t>In any case, the AS MUST ensure that the scope of this legal basis is enforced 
+     throughout the whole process. The AS MUST retain the scope of the legal basis with 
+     the access token, e.g. in the scope value, and the AS MUST determine the data a 
+     resource server is allowed to receive based on the resource server’s identity and 
+     suitable token data, e.g. the scope value. </t>
     </section>
     
     <section anchor="Acknowledgements" title="Acknowledgements">
