@@ -277,8 +277,17 @@ token=2YotnFZFEjr1zCsicMWpAA]]></artwork>
       defined in the "OAuth Token Introspection Response" registry established by 
       <xref target="RFC7662"/>.</t>
       
-      <t>The AS determines based on RS-specific policy what user data
-      to return in the introspection response. The AS MUST ensure
+      <t>It MAY especially contain claims about the resource 
+      owner, represented by End-user claims as defined in <xref target="OpenID.Core"/>, 
+      Section 5.1. Those claims are, for example, utilised by the RS to identify 
+      the natural person acting as resource owner or to carry data about 
+      communication address, such as e-Mail or phone number, that are relevant for the RS
+      to communicate with the resource owner. The semantics of these claims in the token
+      introspection response is the same as in ID Tokens or UserInfo responses. They are
+      just transmitted to the recipient via another mechanism.</t>
+      
+      <t>The AS determines based on the RS-specific policy what claims about the resource
+      owner to return in the introspection response. The AS MUST ensure
       that the release of any privacy-sensitive data is legally based.</t>
       
       <t>The following is a non-normative example response 
