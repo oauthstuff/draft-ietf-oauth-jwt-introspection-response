@@ -221,7 +221,7 @@ token=2YotnFZFEjr1zCsicMWpAA]]></artwork>
     <section anchor="jwt_response" title="JWT Response">
     
       <t>The introspection endpoint responds with a JWT, setting the
-          Content-Type header to "application/jwt". This JWT is a cryptographically 
+          "Content-Type" header to "application/jwt". This JWT is a cryptographically 
           protected representation of the token introspection response as specified in
           <xref target="RFC7662"/>.</t>
           
@@ -273,18 +273,21 @@ token=2YotnFZFEjr1zCsicMWpAA]]></artwork>
       <t>If possible, the AS MUST narrow down the <spanx style="verb">scope</spanx> 
       value to the scopes relevant to the particular RS.</t>
       
-      <t>The JWT formatted introspection response MAY further contain claims
-      defined in the "OAuth Token Introspection Response" registry established by 
-      <xref target="RFC7662"/>.</t>
+      <t>The JWT formatted introspection response MAY contain further claims, 
+      especially the claims defined in the "OAuth Token Introspection Response" registry 
+      established by <xref target="RFC7662"/> or the "JSON Web Token Claims" registry 
+      established by <xref target="RFC7519"/>.</t>
       
-      <t>It MAY especially contain data about the resource owner, represented by 
-      End-user claims as defined in <xref target="OpenID.Core"/>, Section 5.1. Those 
+      <t>This includes data about the resource owner, e.g. using the claims as 
+      defined in <xref target="OpenID.Core"/>. Those 
       claims are, for example, utilised by the RS to identify the natural person acting 
-      as resource owner or to carry data about communication address, such as e-Mail or 
-      phone number, that are relevant for the RS to communicate with the resource owner. 
+      as resource owner or to carry data about a communication address, such as e-Mail 
+      address or phone number, that are relevant for the RS to communicate with the 
+      resource owner. 
       The semantics of these claims in the token introspection response is the same as 
-      in OpenID Connect ID Tokens or UserInfo responses. They are just transmitted to 
-      the recipient via another mechanism, i.e. the AS functions as IDP for the RS.</t>
+      in OpenID Connect ID Tokens or UserInfo responses. In the case of this specification,
+      those claims are transmitted to the recipient via another mechanism, i.e. the AS 
+      functions as IDP for the RS.</t>
       
       <t>The AS determines based on the RS-specific policy what claims about the resource
       owner to return in the introspection response. The AS MUST ensure
@@ -638,227 +641,7 @@ JOd0ziYBpAbEpYGE4p3wog4]]></artwork>
           </t>
         </section>
       </section>     
-      
-    <section anchor="ietf-oauth-introspectionIANA" title="OAuth Token Introspection Response">
-     <t>
-        This specification requests registration of the following claim values as defined 
-        in <xref target="OpenID.Core"/>, Section 5.1, in the IANA "OAuth Token Introspection 
-        Response" registry.
-        <xref target="IANA.OAuth.Parameters"/> established by <xref target="RFC7662"/>.
-      </t>
-        <section title="Registry Contents">
-          <t>
-            <list style='symbols'>
-              <t>Name: <spanx style="verb">name</spanx></t>
-              <t>Description: End-User's full name in displayable form including all name 
-              parts, possibly including titles and suffixes, ordered according to the 
-              End-User's locale and preferences.</t>
-              <t>Change Controller: IESG</t>
-              <t>Specification Document(s):<xref target="OpenID.Core"/>, Section 5.1</t>             
-            </list>
-          </t>
-          <t>
-            <list style='symbols'>
-              <t>Name: <spanx style="verb">given_name</spanx></t>
-              <t>Description: Given name(s) or first name(s) of the End-User. 
-              Note that in some cultures, people can have multiple given names; all can 
-              be present, with the names being separated by space characters.</t>
-              <t>Change Controller: IESG</t>
-              <t>Specification Document(s):<xref target="OpenID.Core"/>, Section 5.1</t>             
-            </list>
-          </t>
-          <t>
-            <list style='symbols'>
-              <t>Name: <spanx style="verb">family_name</spanx></t>
-              <t>Description: Surname(s) or last name(s) of the End-User. Note that in 
-              some cultures, people can have multiple family names or no family name; all 
-              can be present, with the names being separated by space characters.</t>
-              <t>Change Controller: IESG</t>
-              <t>Specification Document(s):<xref target="OpenID.Core"/>, Section 5.1</t>             
-            </list>
-          </t>
-          <t>
-            <list style='symbols'>
-              <t>Name: <spanx style="verb">middle_name</spanx></t>
-              <t>Description: Middle name(s) of the End-User. Note that in some cultures, 
-              people can have multiple middle names; all can be present, with the names 
-              being separated by space characters. Also note that in some cultures, 
-              middle names are not used.</t>
-              <t>Change Controller: IESG</t>
-              <t>Specification Document(s):<xref target="OpenID.Core"/>, Section 5.1</t>             
-            </list>
-          </t>
-          <t>
-            <list style='symbols'>
-              <t>Name: <spanx style="verb">nickname</spanx></t>
-              <t>Description: Casual name of the End-User that may or may not be the same 
-              as the given_name. For instance, a nickname value of Mike might be returned 
-              alongside a given_name value of Michael.</t>
-              <t>Change Controller: IESG</t>
-              <t>Specification Document(s):<xref target="OpenID.Core"/>, Section 5.1</t>             
-            </list>
-          </t>
-          <t>
-            <list style='symbols'>
-              <t>Name: <spanx style="verb">preferred_username</spanx></t>
-              <t>Description: Shorthand name by which the End-User wishes to be referred 
-              to at the RP, such as janedoe or j.doe. This value MAY be any valid JSON 
-              string including special characters such as @, /, or whitespace.</t>
-              <t>Change Controller: IESG</t>
-              <t>Specification Document(s):<xref target="OpenID.Core"/>, Section 5.1</t>             
-            </list>
-          </t>
-          <t>
-            <list style='symbols'>
-              <t>Name: <spanx style="verb">profile</spanx></t>
-              <t>Description:URL of the End-User's profile page. The contents of this Web 
-              page SHOULD be about the End-User.</t>
-              <t>Change Controller: IESG</t>
-              <t>Specification Document(s):<xref target="OpenID.Core"/>, Section 5.1</t>             
-            </list>
-          </t>
-          <t>
-            <list style='symbols'>
-              <t>Name: <spanx style="verb">picture</spanx></t>
-              <t>Description: URL of the End-User's profile picture. This URL MUST refer 
-              to an image file (for example, a PNG, JPEG, or GIF image file), rather than 
-              to a Web page containing an image. Note that this URL SHOULD specifically 
-              reference a profile photo of the End-User suitable for displaying when 
-              describing the End-User, rather than an arbitrary photo taken by the 
-              End-User.</t>
-              <t>Change Controller: IESG</t>
-              <t>Specification Document(s):<xref target="OpenID.Core"/>, Section 5.1</t>             
-            </list>
-          </t>
-          <t>
-            <list style='symbols'>
-              <t>Name: <spanx style="verb">website</spanx></t>
-              <t>Description: URL of the End-User's Web page or blog. This Web page SHOULD 
-              contain information published by the End-User or an organization that the 
-              End-User is affiliated with.</t>
-              <t>Change Controller: IESG</t>
-              <t>Specification Document(s):<xref target="OpenID.Core"/>, Section 5.1</t>             
-            </list>
-          </t>
-          <t>
-            <list style='symbols'>
-              <t>Name: <spanx style="verb">email</spanx></t>
-              <t>Description: End-User's preferred e-mail address. Its value MUST conform 
-              to the <xref target="RFC5322"/> <spanx style="verb">addr-spec</spanx> syntax. </t>
-              <t>Change Controller: IESG</t>
-              <t>Specification Document(s):<xref target="OpenID.Core"/>, Section 5.1</t>             
-            </list>
-          </t>
-          <t>
-            <list style='symbols'>
-              <t>Name: <spanx style="verb">email_verified</spanx></t>
-              <t>Description: True if the End-User's e-mail address has been verified; 
-              otherwise false. When this Claim Value is true, this means that the OP took 
-              affirmative steps to ensure that this e-mail address was controlled by the 
-              End-User at the time the verification was performed. The means by which an 
-              e-mail address is verified is context-specific, and dependent upon the 
-              trust framework or contractual agreements within which the parties are 
-              operating. </t>
-              <t>Change Controller: IESG</t>
-              <t>Specification Document(s):<xref target="OpenID.Core"/>, Section 5.1</t>             
-            </list>
-          </t>
-          <t>
-            <list style='symbols'>
-              <t>Name: <spanx style="verb">gender</spanx></t>
-              <t>Description:End-User's gender. Values defined by this specification are 
-              female and male. Other values MAY be used when neither of the defined 
-              values are applicable. </t>
-              <t>Change Controller: IESG</t>
-              <t>Specification Document(s):<xref target="OpenID.Core"/>, Section 5.1</t>             
-            </list>
-          </t>
-          <t>
-            <list style='symbols'>
-              <t>Name: <spanx style="verb">birthdate</spanx></t>
-              <t>Description:Time the End-User's information was last updated. Its value 
-              is a JSON number representing the number of seconds from 1970-01-01T0:0:0Z 
-              as measured in UTC until the date/time.</t>
-              <t>Change Controller: IESG</t>
-              <t>Specification Document(s):<xref target="OpenID.Core"/>, Section 5.1</t>             
-            </list>
-          </t>
-          <t>
-            <list style='symbols'>
-              <t>Name: <spanx style="verb">zoneinfo</spanx></t>
-              <t>Description: String from zoneinfo [zoneinfo] time zone database 
-              representing the End-User's time zone. For example, Europe/Paris or 
-              America/Los_Angeles. </t>
-              <t>Change Controller: IESG</t>
-              <t>Specification Document(s):<xref target="OpenID.Core"/>, Section 5.1</t>             
-            </list>
-          </t>
-          <t>
-            <list style='symbols'>
-              <t>Name: <spanx style="verb">locale</spanx></t>
-              <t>Description: End-User's locale, represented as a BCP47 [RFC5646] 
-              language tag. This is typically an ISO 639-1 Alpha-2 <xref target="ISO639-1"/> 
-              language code in lowercase and an ISO 3166-1 Alpha-2 <xref target="ISO3166-1"/>
-              country code in 
-              uppercase, separated by a dash. For example, en-US or fr-CA. As a 
-              compatibility note, some implementations have used an underscore as 
-              the separator rather than a dash, for example, en_US; Relying Parties 
-              MAY choose to accept this locale syntax as well.</t>
-              <t>Change Controller: IESG</t>
-              <t>Specification Document(s):<xref target="OpenID.Core"/>, Section 5.1</t>             
-            </list>
-          </t>
-          <t>
-            <list style='symbols'>
-              <t>Name: <spanx style="verb">phone_number</spanx></t>
-              <t>Description: End-User's preferred telephone number. <xref target="E.164"/>
-              is 
-              RECOMMENDED as the format of this Claim, for example, +1 (425) 555-1212 or 
-              +56 (2) 687 2400. If the phone number contains an extension, it is 
-              RECOMMENDED that the extension be represented using the <xref target="RFC3966"/> 
-              extension syntax, for example, +1 (604) 555-1234;ext=5678. </t>
-              <t>Change Controller: IESG</t>
-              <t>Specification Document(s):<xref target="OpenID.Core"/>, Section 5.1</t>             
-            </list>
-          </t>
-          <t>
-            <list style='symbols'>
-              <t>Name: <spanx style="verb">phone_number_verified</spanx></t>
-              <t>Description: True if the End-User's phone number has been verified; 
-              otherwise false. When this Claim Value is true, this means that the OP 
-              took affirmative steps to ensure that this phone number was controlled by 
-              the End-User at the time the verification was performed. The means by which 
-              a phone number is verified is context-specific, and dependent upon the 
-              trust framework or contractual agreements within which the parties are 
-              operating. When true, the phone_number Claim MUST be in <xref target="E.164"/> format and 
-              any extensions MUST be represented in <xref target="RFC3966"/> format. </t>
-              <t>Change Controller: IESG</t>
-              <t>Specification Document(s):<xref target="OpenID.Core"/>, Section 5.1</t>             
-            </list>
-          </t>
-          <t>
-            <list style='symbols'>
-              <t>Name: <spanx style="verb">address</spanx></t>
-              <t>Description: End-User's preferred postal address. The value of the 
-              address member is a JSON <xref target="RFC8259"/> structure containing some or all of 
-              the members defined in <xref target="OpenID.Core"/>, Section 5.1.1. </t>
-              <t>Change Controller: IESG</t>
-              <t>Specification Document(s):<xref target="OpenID.Core"/>, Section 5.1</t>             
-            </list>
-          </t>
-          <t>
-            <list style='symbols'>
-              <t>Name: <spanx style="verb">updated_at</spanx></t>
-              <t>Description: Time the End-User's information was last updated. Its value 
-              is a JSON number representing the number of seconds from 
-              1970-01-01T0:0:0Z as measured in UTC until the date/time. </t>
-              <t>Change Controller: IESG</t>
-              <t>Specification Document(s):<xref target="OpenID.Core"/>, Section 5.1</t>             
-            </list>
-          </t>
-        </section>
-      </section>     
-
+ 
       <section anchor="ietf-media-typeIANA" title="Media Type Registration">
       <t>This section registers the "application/token-introspection+jwt" media type
    in the "Media Types" registry <xref target="IANA.MediaTypes"/> in the
