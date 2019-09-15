@@ -275,14 +275,14 @@ token=2YotnFZFEjr1zCsicMWpAA]]></artwork>
       
       <t>The JWT formatted introspection response MAY contain further claims, 
       especially the claims defined in the "OAuth Token Introspection Response" registry 
-      established by <xref target="RFC7662"/> or the "JSON Web Token Claims" registry 
+      established by <xref target="RFC7662"/> and the "JSON Web Token Claims" registry
       established by <xref target="RFC7519"/>.</t>
       
-      <t>Claims about the resource owner, as defined in <xref target="OpenID.Core"/>,
-      MAY also be included. In that case the RS acts as an identity provider in regard
-      to the RS. Such claims may serve to identify the resource owner as natural
-      person or to provide a required contact detail, such as an e-Mail address or
-      phone number.</t>
+      <t>This includes claims from the "JSON Web Token Claims" registry that are commonly used
+      in <xref target="OpenID.Core"/> and can be applied to the resource owner. These claims
+      can serve to identify the resource owner as a natural person or to provide a required
+      contact detail, such as an e-Mail address or phone number. When transmitting such claims
+      the AS acts as an identity provider in regard to the RS.</t>
       
       <t>The AS determines based on the RS-specific policy what claims about the resource
       owner to return in the introspection response. The AS MUST ensure
