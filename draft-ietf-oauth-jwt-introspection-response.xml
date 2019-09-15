@@ -505,19 +505,18 @@ JOd0ziYBpAbEpYGE4p3wog4]]></artwork>
     
     <section anchor="privacy" title="Privacy Considerations">
      <t>The token introspection response can be used to transfer personal identifiable 
-     information from the AS to the RS. The AS MUST ensure a legal basis exists for this
-     data transfer before any data is released to a particular RS. The way this legal 
+     information from the AS to the RS. The AS MUST ensure a legal basis exists for the
+     data transfer before any data is released to a particular RS. The way the legal
      basis is established might vary among jurisdictions and MUST consider
      the legal entities involved.</t>
-    <t>For example, the classical way to establish the legal basis is an explicit user 
-     consent gathered and captured by the AS in the authorization flow from the 
-     resource owner.</t>
+     <t>For example, the classical way to establish the legal basis is by explicit user
+     consent gathered from the resource owner by the AS during the authorization flow.</t>
      <t>It is also possible that the legal basis is established out of band, e.g. in 
      an explicit contract or by the client gathering the resource owner's consent.</t> 
-     <t>If AS and RS belong to the same legal entity (1st party scenario), there is 
+     <t>If the AS and the RS belong to the same legal entity (1st party scenario), there is
      potentially no need for an explicit user consent but the terms of service and policy
      of the respective service provider MUST be enforced at all times.</t>
-     <t>In any case, the AS MUST ensure that the scope of this legal basis is enforced 
+     <t>In any case, the AS MUST ensure that the scope of the legal basis is enforced
      throughout the whole process. The AS MUST retain the scope of the legal basis with 
      the access token, e.g. in the scope value, and the AS MUST determine the data a 
      resource server is allowed to receive based on the resource server’s identity and 
