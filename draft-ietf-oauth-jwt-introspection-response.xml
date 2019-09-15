@@ -278,16 +278,11 @@ token=2YotnFZFEjr1zCsicMWpAA]]></artwork>
       established by <xref target="RFC7662"/> or the "JSON Web Token Claims" registry 
       established by <xref target="RFC7519"/>.</t>
       
-      <t>This includes data about the resource owner, e.g. using the claims as 
-      defined in <xref target="OpenID.Core"/>. Those 
-      claims are, for example, utilised by the RS to identify the natural person acting 
-      as resource owner or to carry data about a communication address, such as e-Mail 
-      address or phone number, that are relevant for the RS to communicate with the 
-      resource owner. 
-      The semantics of these claims in the token introspection response is the same as 
-      in OpenID Connect ID Tokens or UserInfo responses. In the case of this specification,
-      those claims are transmitted to the recipient via another mechanism, i.e. the AS 
-      functions as IDP for the RS.</t>
+      <t>Claims about the resource owner, as defined in <xref target="OpenID.Core"/>,
+      MAY also be included. In that case the RS acts as an identity provider in regard
+      to the RS. Such claims may serve to identify the resource owner as natural
+      person or to provide a required contact detail, such as an e-Mail address or
+      phone number.</t>
       
       <t>The AS determines based on the RS-specific policy what claims about the resource
       owner to return in the introspection response. The AS MUST ensure
