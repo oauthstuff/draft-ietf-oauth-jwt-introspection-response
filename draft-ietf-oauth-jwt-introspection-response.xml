@@ -151,7 +151,7 @@
     </section>
     
     <section anchor="as-rs-relationshio" title="Resource server management">
-    <t>The authorization server and the resource server maintain a strong two-way trust relationship.
+    <t>The authorization server (AS) and the resource server (RS) maintain a strong two-way trust relationship.
     The resource server relies on the authorization server to obtain authorization,
     user and other data as input to its access control decisions and service delivery.
     The authorization server relies on the resource server to handle the provided data
@@ -194,7 +194,7 @@
         introspection request.</t>
         
     <t>Authentication at the token introspection endpoint can utilize client authentication
-    methods or a separate access tokens issued to the resource server. Whether a resource
+    methods or a separate access token issued to the resource server. Whether a resource
     server is required to authenticate is determined by the respective RS-specific
     policy at the AS.</t>
 
@@ -440,7 +440,7 @@ JOd0ziYBpAbEpYGE4p3wog4]]></artwork>
       an end-user at a OpenID Connect relying party by passing the JWT as an ID
       token.</t>
       
-      <t>Any RP processing the <spanx style="verb">typ</spanx> JWT header 
+      <t>Any relying party processing the <spanx style="verb">typ</spanx> JWT header
       element should detect the attack since token introspection responses
       in JWT format set this header to the value "token-introspection+jwt". 
       Unfortunately, this is not a well established practice yet.</t>
