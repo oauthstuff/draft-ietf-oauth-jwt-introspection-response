@@ -44,7 +44,7 @@
 <?rfc subcompact="no" ?>
 <!-- keep one blank line between list items -->
 <!-- end of list of popular I-D processing instructions -->
-<rfc category="std" docName="draft-ietf-oauth-jwt-introspection-response-07"
+<rfc category="std" docName="draft-ietf-oauth-jwt-introspection-response-08"
      ipr="trust200902">
   <!--
 		category values: std, bcp, info, exp, and historic ipr values:
@@ -85,7 +85,7 @@
       </address>
     </author>
 
-    <date day="29" month="Aug" year="2019" />
+    <date day="16" month="Sep" year="2019" />
 
     <!-- Meta-data Declarations -->
 
@@ -124,7 +124,7 @@
       <t><xref target="RFC7662">OAuth 2.0 Token Introspection</xref> specifies a 
       method for a protected resource to query an OAuth 2.0 authorization server 
       to determine the state of an access token and obtain data associated with
-      the access token. This enables deployments to implement identifier-based access
+      the access token. This enables deployments to implement opaque access
       tokens in an interoperable way.</t>
       <t>The introspection response, as specified in <xref target="RFC7662">OAuth
       2.0 Token Introspection</xref>, is a plain JSON object.
@@ -135,9 +135,9 @@
       An example is a resource server using verified person data to create certificates, 
       which in turn are used to create qualified electronic signatures.</t>
       <t>In such use cases it may be useful or even required to return a
-      signed JWT as the introspection response. This specification extends the
-      token introspection endpoint with the capability to return responses as
-      JWTs.</t>
+      signed <xref target="RFC7519">JWT</xref> as the introspection response. 
+      This specification extends the token introspection endpoint with the capability 
+      to return responses as JWTs.</t>
       </section>
       
        <section anchor="RNC" title="Requirements Notation and Conventions">
@@ -184,7 +184,8 @@
     the token introspection endpoint only. How the AS implements this restriction
     is beyond the scope of this specification.</t>
     <t>This specification further introduces client metadata to manage the
-    configuration options required to encrypt token introspection response JWTs.</t>
+    configuration options required to sign and encrypt token introspection 
+    response JWTs.</t>
     </section>
 
 	<section anchor="jwt_request" title="Requesting a JWT Response">
@@ -235,7 +236,7 @@ token=2YotnFZFEjr1zCsicMWpAA]]></artwork>
      
      <t>This specification registers the "application/token-introspection+jwt" media type, 
      which is used as value of the <spanx style="verb">typ</spanx> header parameter of the 
-     JWT to indicate that the payload is an introspection response.</t>
+     JWT to indicate that the payload is a token introspection response.</t>
       
       <t>If the access token is invalid, expired, has been revoked, or is 
       not intended to be consumed by the calling resource server (audience), the 
@@ -285,7 +286,7 @@ token=2YotnFZFEjr1zCsicMWpAA]]></artwork>
       the AS acts as an identity provider in regard to the RS.</t>
       
       <t>The AS determines based on the RS-specific policy what claims about the resource
-      owner to return in the introspection response. The AS MUST ensure
+      owner to return in the token introspection response. The AS MUST ensure
       that the release of any privacy-sensitive data is legally based.</t>
       
       <t>The following is a non-normative example response 
@@ -364,8 +365,8 @@ JOd0ziYBpAbEpYGE4p3wog4]]></artwork>
       <t>The authorization server determines what algorithm to employ to
       secure the JWT for a particular introspection response. This decision can
       be based on registered metadata parameters for the resource server,
-      supplied via dynamic client registration with the resource server posing
-      as the client, as specified here.</t>
+      supplied via dynamic client registration <xref target="RFC7591"/> with the 
+      resource server acting as a client, as specified below.</t>
       <t>The parameter names follow the pattern established by
       <xref target="OpenID.Registration">OpenID Connect
       Dynamic Client Registration</xref> for configuring signing and encryption
@@ -381,11 +382,12 @@ JOd0ziYBpAbEpYGE4p3wog4]]></artwork>
       	  configured algorithm. The default, if omitted, is <spanx style="verb">RS256</spanx>.</t>
           <t hangText="introspection_encrypted_response_alg">OPTIONAL.
           <xref target="RFC7516">JWE</xref> algorithm (<spanx style="verb">alg</spanx> value) 
-          as defined in <xref target="RFC7518">JWA</xref> for encrypting introspection responses.
+          as defined in <xref target="RFC7518">JWA</xref> for content key encryption.
           
           If this is specified, the response will be encrypted using JWE and the 
-          configured algorithm. The default, if
-           omitted, is that no encryption is performed.
+          configured content encryption algorithm 
+          (<spanx style="verb">introspection_encrypted_response_enc</spanx>). The default, 
+          if omitted, is that no encryption is performed.
           
           If both signing and 
           encryption are requested, the response will be 
@@ -393,7 +395,8 @@ JOd0ziYBpAbEpYGE4p3wog4]]></artwork>
           <xref target="RFC7519">JWT</xref>.</t>
           <t hangText="introspection_encrypted_response_enc">OPTIONAL.
           <xref target="RFC7516">JWE</xref> algorithm (<spanx style="verb">enc</spanx> value) 
-          as defined in <xref target="RFC7518">JWA</xref> for authenticated encryption of introspection responses. The default, if omitted, is <spanx style="verb">A128CBC-HS256</spanx>.
+          as defined in <xref target="RFC7518">JWA</xref> for content encryption of 
+          introspection responses. The default, if omitted, is <spanx style="verb">A128CBC-HS256</spanx>.
           Note: This parameter MUST NOT be specified without setting 
           <spanx style="verb">introspection_encrypted_response_alg</spanx>.</t>
         </list>
@@ -407,7 +410,8 @@ JOd0ziYBpAbEpYGE4p3wog4]]></artwork>
       <t>Authorization servers SHOULD publish the supported algorithms for
       signing and encrypting the JWT of an introspection response by utilizing
       <xref target="RFC8414">OAuth 2.0 Authorization Server Metadata</xref>
-      parameters.</t>
+      parameters. Resource servers use this data to parametrize their client
+      registration requests.</t>
      <t>The following parameters are introduced by this specification: 
 		<list hangIndent="8" style="hanging">
 				
@@ -421,13 +425,14 @@ JOd0ziYBpAbEpYGE4p3wog4]]></artwork>
 		OPTIONAL. JSON array containing a list of the <xref target="RFC7516">JWE</xref> 
 		encryption algorithms (<spanx style="verb">alg</spanx> values) as defined in
 		<xref target="RFC7518">JWA</xref> supported by the 
-		introspection endpoint to encrypt the response.</t>
+		introspection endpoint to encrypt the content encryption key for 
+		introspection responses (content key encryption).</t>
 
 		<t hangText="introspection_encryption_enc_values_supported">
-		OPTIONAL. JSON array containing a list of the <xref target="RFC7516">JWE</xref> encryption 
-		algorithms (<spanx style="verb">enc</spanx> values) as defined in
+		OPTIONAL. JSON array containing a list of the <xref target="RFC7516">JWE</xref> 
+		encryption algorithms (<spanx style="verb">enc</spanx> values) as defined in
 		<xref target="RFC7518">JWA</xref> supported by the introspection
-		endpoint to encrypt the response.</t>
+		endpoint to encrypt the response (content encryption).</t>
 
         </list>
       </t>
@@ -435,10 +440,11 @@ JOd0ziYBpAbEpYGE4p3wog4]]></artwork>
     
     <section anchor="Security" title="Security Considerations">
      <section anchor="Cross-JWT_Confusion" title="Cross-JWT Confusion">
-      <t>JWT introspection responses and OpenID Connect ID Tokens are 
-      syntactically similar. An attacker could therefore attempt to impersonate
-      an end-user at a OpenID Connect relying party by passing the JWT as an ID
-      token.</t>
+      <t>Token introspection responses in JWT format, access tokens in JWT format, 
+      and OpenID Connect ID Tokens are syntactical similar. Attackers could try to utilize 
+      this fact and attempt to use a token introspection response as access token when 
+      invoking a resource server or as ID Token when logging into at a OpenID 
+      Connect RP.</t> 
       
       <t>Any relying party processing the <spanx style="verb">typ</spanx> JWT header
       element should detect the attack since token introspection responses
@@ -447,36 +453,33 @@ JOd0ziYBpAbEpYGE4p3wog4]]></artwork>
       
       <t>As an alternative approach, such an attack can be prevented like 
       any other token substitution attack by restricting the audience of the JWT.
-      The authorization server MUST include the claims
-      <spanx style="verb">iss</spanx> and <spanx style="verb">aud</spanx> in
+      As specified in <xref target="jwt_response"/>, the authorization server includes 
+      the claims <spanx style="verb">iss</spanx> and <spanx style="verb">aud</spanx> in
       each JWT introspection response, with the <spanx style="verb">iss</spanx> 
       value set to the authorization server's issuer URL and the 
       <spanx style="verb">aud</spanx> value set
-      to the resource server's identifier. This allows a correctly implemented
-      OpenID Connect relying party to detect substitution by checking the
-      <spanx style="verb">iss</spanx> and
-      <spanx style="verb">aud</spanx> claims as described in Section 3.1.3.7. of 
-      <xref target="OpenID.Core"/>. Relying parties SHOULD also use and check
+      to the resource server's identifier. Any recipient of an JWT MUST check these 
+      values in order to detect substitution attacks.</t> 
+      
+      <t>OpenID Connect RPs are additionally expected to use and check
       the <spanx style="verb">nonce</spanx> parameter and claim to prevent
       token and code replay.</t>
       
-      <t>Resource servers utilizing JWTs to represent self-contained access
-      tokens could be susceptible to replay attacks. Resource servers
-      should therefore apply proper countermeasures against replay as
-      described in <xref target="I-D.ietf-oauth-security-topics"/>, 
-      section 2.2.</t>
+      <t>Resource servers MUST additionally apply the countermeasures against replay 
+      as described in <xref target="I-D.ietf-oauth-security-topics"/>, section 3.2.</t>
       <t>JWT Confusion and other attacks involving JWTs are discussed in
       <xref target="I-D.ietf-oauth-jwt-bcp"/>.</t>
            </section>
 
       <section anchor="token_data_leakage" title="Token Data Leakage">
      <t>The authorization server MUST use Transport Layer Security (TLS) 1.2 
-      (or higher) per <xref target="RFC7525"/> in order to prevent token data leakage.</t>
+      (or higher) per BCP 195 <xref target="RFC7525"/> in order to prevent 
+      token data leakage.</t>
       <t>To prevent introspection of leaked tokens and to present an additional
       security layer against token guessing attacks the authorization server
-      may require all requests to the token introspection endpoint to be
+      MAY require all requests to the token introspection endpoint to be
       authenticated. As an alternative or as an addition to the authentication,
-      the intended recipients may be set up for encrypted responses.</t>
+      the intended recipients MAY be set up for encrypted responses.</t>
       <t>In the latter case, confidentiality is ensured by the fact that only
       the legitimate recipient is able to decrypt the response.
       An attacker could try to circumvent this measure by requesting a plain 
@@ -524,8 +527,8 @@ JOd0ziYBpAbEpYGE4p3wog4]]></artwork>
     </section>
     
     <section anchor="Acknowledgements" title="Acknowledgements">
-      <t>We would like to thank Petteri Stenius, Neil Madden, Filip Skokan, and Tony 
-      Nadalin for their valuable feedback.</t>
+      <t>We would like to thank Petteri Stenius, Neil Madden, Filip Skokan, Tony 
+      Nadalin, and Remco Schaar for their valuable feedback.</t>
     </section>
 
     <!-- Possibly a 'Contributors' section ... -->
@@ -567,7 +570,7 @@ JOd0ziYBpAbEpYGE4p3wog4]]></artwork>
               <t>
                 Client Metadata Description:
                 String value specifying the desired introspection response 
-                encryption algorithm (alg value).
+                content key encryption algorithm (alg value).
               </t>
               <t>
                 Change Controller: IESG
@@ -585,7 +588,7 @@ JOd0ziYBpAbEpYGE4p3wog4]]></artwork>
               <t>
                 Client Metadata Description:
                     String value specifying the desired introspection response 
-                encryption algorithm (enc value).
+                content encryption algorithm (enc value).
               </t>
               <t>
                 Change Controller: IESG
@@ -619,7 +622,7 @@ JOd0ziYBpAbEpYGE4p3wog4]]></artwork>
             <list style='symbols'>
               <t>Metadata Name: <spanx style="verb">introspection_encryption_alg_values_supported</spanx></t>
               <t>Metadata Description: JSON array containing a list of algorithms supported 
-              by the authorization server for introspection response encryption (alg value).</t>
+              by the authorization server for introspection response content key encryption (alg value).</t>
               <t>Change Controller: IESG</t>
               <t>Specification Document(s): <xref target="server_metadata"/> of [[ this specification ]]</t>             
             </list>
@@ -628,7 +631,7 @@ JOd0ziYBpAbEpYGE4p3wog4]]></artwork>
             <list style='symbols'>
               <t>Metadata Name: <spanx style="verb">introspection_encryption_enc_values_supported</spanx></t>
               <t>Metadata Description: JSON array containing a list of algorithms supported 
-              by the authorization server for introspection response encryption (enc value).</t>
+              by the authorization server for introspection response content encryption (enc value).</t>
               <t>Change Controller: IESG</t>
               <t>Specification Document(s): <xref target="server_metadata"/> of [[ this specification ]]</t>             
             </list>
@@ -802,6 +805,21 @@ JOd0ziYBpAbEpYGE4p3wog4]]></artwork>
     
     <section anchor="History" title="Document History">
       <t>[[ To be removed from the final specification ]]</t>
+      
+	  <t>-08<list style="symbols">
+          <t>made difference between introspected access token and 
+          introspection response clearer</t>
+          <t>defined semantics of JWT claims overlapping between 
+          introspected access token and introspection response as JWT</t>
+          <t>added section about RS management</t>
+          <t>added text about user claims including a privacy considerations section</t>
+          <t>removed registration of OpenID Connect claims to "Token 
+          Introspection Response" registry and refer to "JWT Claims" registry instead</t>
+          <t>added registration of "application/token-introspection+jwt" media type as
+          type identifier of token introspection responses in JWT format</t>
+          <t>more changed to incorporate IESG review feedback</t>
+        </list>
+      </t> 
       
 	  <t>-07<list style="symbols">
           <t>fixed wrong description of "locale"</t>
