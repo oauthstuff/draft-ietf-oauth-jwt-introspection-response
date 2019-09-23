@@ -85,7 +85,7 @@
       </address>
     </author>
 
-    <date day="16" month="Sep" year="2019" />
+    <date day="19" month="Sep" year="2019" />
 
     <!-- Meta-data Declarations -->
 
@@ -338,8 +338,8 @@ JOd0ziYBpAbEpYGE4p3wog4]]></artwork>
    "jti": "t1FoCCaZd4Xv4ORJUWVUeTZfsKhW30CQCrWDDjwXy6w",
    "active":true,
    "scope":"read write dolphin",
-   "exp":1514797942000,
-   "iat":1514797822000,
+   "exp":1514797942,
+   "iat":1514797822,
    "client_id":"s6BhdRkqt3",
    "sub":"Z5O3upPC88QrAjx00dis",
    "given_name":"John",
@@ -688,13 +688,10 @@ JOd0ziYBpAbEpYGE4p3wog4]]></artwork>
 
   <back>
     <references title="Normative References">
-      <?rfc include="reference.RFC.2119"?>
-      <?rfc include="reference.RFC.3966"?>       
-      <?rfc include="reference.RFC.5322"?>
+      <?rfc include="reference.RFC.2119"?>    
       <?rfc include="reference.RFC.6838"?>      
       <?rfc include="reference.RFC.7519"?>
       <?rfc include="reference.RFC.7525"?>
-      <?rfc include="reference.RFC.8259"?>   
       <?rfc include="reference.RFC.7591"?>
       <?rfc include="reference.RFC.7662"?>
       <?rfc include="reference.RFC.7518"?>
@@ -752,40 +749,6 @@ JOd0ziYBpAbEpYGE4p3wog4]]></artwork>
 	    <organization abbrev="ISO">IANA</organization>
 	  </author>
           <date/>
-	</front>
-</reference>
-
-<reference anchor="ISO3166-1" target="https://www.iso.org/standard/63545.html">
-	<front>
-	  <title>ISO 3166-1:1997. Codes for the representation of names of
-	  countries and their subdivisions -- Part 1: Country codes</title>
-	  <author fullname="International Organization for Standardization">
-	    <organization abbrev="ISO">International Organization for
-	    Standardization</organization>
-	  </author>
-	  <date year="2013" />
-	</front>
-</reference>
-
-<reference anchor="ISO639-1" target="https://www.iso.org/standard/22109.html">
-	<front>
-	  <title>ISO 639-1:2002 Codes for the representation of names of languages 
-	  -- part 1: Alpha-2 Code</title>
-	  <author fullname="International Organization for Standardization">
-	    <organization abbrev="ISO">International Organization for
-	    Standardization</organization>
-	  </author>
-	  <date year="2002" />
-	</front>
-</reference>
-
-<reference anchor="E.164" target="https://www.itu.int/rec/T-REC-E.164-201011-I/en">
-	<front>
-	  <title>E.164: The international public telecommunication numbering plan</title>
-	  <author fullname="International Organization for Standardization">
-	    <organization abbrev="ITU">International Telecommunication Union</organization>
-	  </author>
-	  <date year="2010" />
 	</front>
 </reference>
 
