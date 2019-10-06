@@ -160,12 +160,11 @@
     such security data and potentially also privacy sensitive data related to an access
     token.</t>
     <t>In order to process the introspection requests in a secure and
-    privacy-preserving manner, the authorization server MUST be able to identify, 
-    authenticate and authorize resource servers.</t>
-    <t>To support encrypted token introspection response JWTs,
-    the authorization server MUST also be provided with the respective
-    resource server encryption keys and algorithms.</t>
-    <t>The authorization server MUST be able to determine whether an RS is the
+    privacy-preserving manner, the authorization server must be able to identify, 
+    authenticate and authorize resource servers. If the token introspection 
+    responses shall be encrypted, the authorization server must also be provided with 
+    the respective resource server encryption keys and algorithms.</t>
+    <t>The authorization server must be able to determine whether an RS is the
     audience for a particular access token and what data it is entitled to receive,
     otherwise the RS is not authorized to obtain data for the access token.
     The AS has the discretion how to fulfil this requirement. The AS could, for example,
@@ -282,12 +281,12 @@ token=2YotnFZFEjr1zCsicMWpAA]]></artwork>
       <t>This includes claims from the "JSON Web Token Claims" registry that are commonly used
       in <xref target="OpenID.Core"/> and can be applied to the resource owner. These claims
       can serve to identify the resource owner as a natural person or to provide a required
-      contact detail, such as an e-Mail address or phone number. When transmitting such claims
+      contact detail, such as an e-mail address or phone number. When transmitting such claims
       the AS acts as an identity provider in regard to the RS.</t>
       
       <t>The AS determines based on the RS-specific policy what claims about the resource
-      owner to return in the token introspection response. The AS MUST ensure
-      that the release of any privacy-sensitive data is legally based.</t>
+      owner to return in the token introspection response. See <xref target="privacy"/> 
+      for further considerations.</t>
       
       <t>The following is a non-normative example response 
       (with line breaks for display purposes only):</t>
