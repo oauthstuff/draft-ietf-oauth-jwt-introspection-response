@@ -194,7 +194,7 @@
     <spanx style="verb">Accept</spanx> HTTP header "application/token-introspection+jwt"
     in the introspection request.</t>
         
-    <t>Authentication at the token introspection endpoint can utilize client authentication
+   <t>The AS SHOULD authenticate the caller of the token introspection endpoint. Authentication at can utilize client authentication methods or a separate access token issued to the resource server. </t>
     methods or a separate access token issued to the resource server. Whether a resource
     server is required to authenticate is determined by the respective RS-specific
     policy at the AS.</t>
