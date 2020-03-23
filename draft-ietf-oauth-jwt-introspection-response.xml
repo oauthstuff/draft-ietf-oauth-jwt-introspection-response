@@ -251,7 +251,7 @@ token=2YotnFZFEjr1zCsicMWpAA]]></artwork>
          Claims from the "JSON Web Token Claims" registry that are commonly used in
          <xref target="OpenID.Core"/> and can be applied to the resource owner MAY be included
          as members in the <spanx style="verb">token_introspection</spanx> claim.
-         They can serve to identify the resource owner as a natural person or to
+         They can serve to convey the privileges delegated to the client, identify the resource owner as a natural person or to
          provide a required contact detail, such as an e-Mail address or phone number.
          When transmitting such claims the AS acts as an identity provider in regard to
          the RS. The AS determines based on its RS-specific policy what claims about the
