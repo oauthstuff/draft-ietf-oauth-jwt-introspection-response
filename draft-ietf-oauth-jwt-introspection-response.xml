@@ -194,10 +194,9 @@
     <spanx style="verb">Accept</spanx> HTTP header "application/token-introspection+jwt"
     in the introspection request.</t>
         
-   <t>The AS SHOULD authenticate the caller of the token introspection endpoint. Authentication at can utilize client authentication methods or a separate access token issued to the resource server. </t>
-    methods or a separate access token issued to the resource server. Whether a resource
-    server is required to authenticate is determined by the respective RS-specific
-    policy at the AS.</t>
+    <t>The AS SHOULD authenticate the caller at the token introspection endpoint.
+    Authentication can utilize client authentication methods or a separate access token issued to the resource server.
+    Whether a resource server is required to authenticate is determined by the respective RS-specific policy at the AS.</t>
 
     <t>The following is a non-normative example request with client authentication:</t>
 
@@ -212,10 +211,6 @@ Content-Type: application/x-www-form-urlencoded
 token=2YotnFZFEjr1zCsicMWpAA]]></artwork>
         </figure>
 	  </t>
-	  
-	  <t>If required by its policy, the authorization server MUST authenticate the 
-	  caller and validate its authorization to use the token introspection
-	  endpoint.</t>
 
 	</section>
 	
@@ -232,6 +227,8 @@ token=2YotnFZFEjr1zCsicMWpAA]]></artwork>
          server.</t>
          <t hangText="aud">MUST identify the resource server receiving the token
          introspection response.</t>
+         <t hangText="iat">MUST be set to the time when the introspection response
+         was created by the authorization server.</t>
          <t hangText="token_introspection">A JSON object containing the members
          of the token introspection response, as specified in the "OAuth Token
          Introspection Response" registry established by <xref target="RFC7662"/>
@@ -242,8 +239,8 @@ token=2YotnFZFEjr1zCsicMWpAA]]></artwork>
          If the access token is invalid, expired, revoked, or is not intended for the
          calling resource server (audience), the authorization server MUST set the value of the
          <spanx style="verb">active</spanx> member in the <spanx style="verb">token_introspection</spanx>
-         claim to <spanx style="verb">false</spanx>. The container MUST not contain any other claims in this case. Otherwise, the <spanx style="verb">active</spanx>
-         member is set to <spanx style="verb">true</spanx>.
+         claim to <spanx style="verb">false</spanx> and other members MUST NOT be included.
+         Otherwise, the <spanx style="verb">active</spanx> member is set to <spanx style="verb">true</spanx>.
          <vspace blankLines="1" />
          If possible, the AS MUST narrow down the <spanx style="verb">scope</spanx> value
          to the scopes relevant to the particular RS.
@@ -251,7 +248,8 @@ token=2YotnFZFEjr1zCsicMWpAA]]></artwork>
          Claims from the "JSON Web Token Claims" registry that are commonly used in
          <xref target="OpenID.Core"/> and can be applied to the resource owner MAY be included
          as members in the <spanx style="verb">token_introspection</spanx> claim.
-         They can serve to convey the privileges delegated to the client, identify the resource owner as a natural person or to
+         They can serve to convey the privileges delegated to the client,
+         to identify the resource owner as a natural person or to
          provide a required contact detail, such as an e-Mail address or phone number.
          When transmitting such claims the AS acts as an identity provider in regard to
          the RS. The AS determines based on its RS-specific policy what claims about the
@@ -788,6 +786,7 @@ gTCKyiOsEIYSuIIDLy4YbHtY14SvZOUQwPDneFxQ]]></artwork>
           <t>moves the token introspection response members into a JSON object
           claim named "token_introspection" to provide isolation from the top-level
           JWT-specific claims</t>
+          <t>"iss", "aud" and "iat" MUST be present as top-level JWT claims</t>
           <t>the "sub" and "exp" claims SHOULD NOT be used as top-level JWT
           claims as additional prevention against JWT access token substitution
           attacks</t>
