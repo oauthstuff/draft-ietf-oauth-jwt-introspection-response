@@ -242,7 +242,7 @@ token=2YotnFZFEjr1zCsicMWpAA]]></artwork>
          If the access token is invalid, expired, revoked, or is not intended for the
          calling resource server (audience), the authorization server MUST set the value of the
          <spanx style="verb">active</spanx> member in the <spanx style="verb">token_introspection</spanx>
-         claim to <spanx style="verb">false</spanx>. Otherwise, the <spanx style="verb">active</spanx>
+         claim to <spanx style="verb">false</spanx>. The container MUST not contain any other claims in this case. Otherwise, the <spanx style="verb">active</spanx>
          member is set to <spanx style="verb">true</spanx>.
          <vspace blankLines="1" />
          If possible, the AS MUST narrow down the <spanx style="verb">scope</spanx> value
