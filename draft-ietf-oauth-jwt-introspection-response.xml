@@ -263,9 +263,8 @@ token=2YotnFZFEjr1zCsicMWpAA]]></artwork>
      </t>
 
      <t>The JWT MAY include other claims, including those from the "JSON Web Token Claims"
-     registry established by <xref target="RFC7519"/>, such as <spanx style="verb">iat</spanx>
-     to indicate when the introspection response was issued by the AS. The JWT SHOULD NOT
-     include the <spanx style="verb">sub</spanx> and <spanx style="verb">exp</spanx> claims
+     registry established by <xref target="RFC7519"/>. The JWT SHOULD NOT include the
+     <spanx style="verb">sub</spanx> and <spanx style="verb">exp</spanx> claims
      as an additional prevention against misuse of the JWT as an access token (see
      <xref target="Cross-JWT_Confusion"/>).</t>
           
