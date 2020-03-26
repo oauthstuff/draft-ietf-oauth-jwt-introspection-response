@@ -300,19 +300,19 @@ Content-Type: application/token-introspection+jwt
 
 eyJraWQiOiJ3RzZEIiwidHlwIjoidG9rZW4taW50cm9zcGVjdGlvbitqd3QiLCJhbGc
 iOiJSUzI1NiJ9.eyJpc3MiOiJodHRwczovL2FzLmV4YW1wbGUuY29tLyIsImF1ZCI6I
-mh0dHBzOi8vcnMuZXhhbXBsZS5jb20vcmVzb3VyY2UiLCJ0b2tlbl9pbnRyb3NwZWN0
-aW9uIjp7ImFjdGl2ZSI6dHJ1ZSwiaXNzIjoiaHR0cHM6Ly9hcy5leGFtcGxlLmNvbS8
-iLCJhdWQiOiJodHRwczovL3JzLmV4YW1wbGUuY29tL3Jlc291cmNlIiwiaWF0IjoxNT
-E0Nzk3ODIyLCJleHAiOjE1MTQ3OTc5NDIsImNsaWVudF9pZCI6InBhaUIyZ29vMGEiL
-CJzY29wZSI6InJlYWR3cml0ZWRvbHBoaW4iLCJzdWIiOiJaNU8zdXBQQzg4UXJBangw
-MGRpcyIsImJpcnRoZGF0ZSI6IjE5ODItMDItMDEiLCJnaXZlbl9uYW1lIjoiSm9obiI
-sImZhbWlseV9uYW1lIjoiRG9lIiwianRpIjoidDFGb0NDYVpkNFh2NE9SSlVXVlVlVF
-pmc0toVzMwQ1FDcldERGp3WHk2dyJ9fQ.d1XLA-X8Inb0kwvRkk10ZokWbpEAO6u4Vb
-0kirVPOLUdo2KiKD1IGer6bcVp-pNc2eC1yyUZGBp5GIDey8qhc41Oyhn6TOUAkLzZM
-u2vAC7j4EsTM7-pKkbWX1kmH84-vAGvLR0MNWtVUgLmmIOy9krUMXE1jd0IS_Iqk7xW
-JxmZLbuLHXx92LXRdErwThO-AHVLkiqIlz08H4LAsnKPVKMouzqBFYwK050ZJbnaVYw
-O-QRC-lhCR_8JnsLZVp-QilDeWkOJiJ46un5HKZSYwxMjkhMs_Py8GOQaQk0ZY4MGCe
-gTCKyiOsEIYSuIIDLy4YbHtY14SvZOUQwPDneFxQ]]></artwork>
+mh0dHBzOi8vcnMuZXhhbXBsZS5jb20vcmVzb3VyY2UiLCJpYXQiOjE1MTQ3OTc4OTIs
+InRva2VuX2ludHJvc3BlY3Rpb24iOnsiYWN0aXZlIjp0cnVlLCJpc3MiOiJodHRwczo
+vL2FzLmV4YW1wbGUuY29tLyIsImF1ZCI6Imh0dHBzOi8vcnMuZXhhbXBsZS5jb20vcm
+Vzb3VyY2UiLCJpYXQiOjE1MTQ3OTc4MjIsImV4cCI6MTUxNDc5Nzk0MiwiY2xpZW50X
+2lkIjoicGFpQjJnb28wYSIsInNjb3BlIjoicmVhZHdyaXRlZG9scGhpbiIsInN1YiI6
+Ilo1TzN1cFBDODhRckFqeDAwZGlzIiwiYmlydGhkYXRlIjoiMTk4Mi0wMi0wMSIsImd
+pdmVuX25hbWUiOiJKb2huIiwiZmFtaWx5X25hbWUiOiJEb2UiLCJqdGkiOiJ0MUZvQ0
+NhWmQ0WHY0T1JKVVdWVWVUWmZzS2hXMzBDUUNyV0REandYeTZ3In19.przJMU5GhmNz
+vwtt1Sr-xa9xTkpiAg5IshbQsRiRVP_7eGR1GHYrNwQh84kxOkHCyje2g5WSRcYosGE
+VIiC-eoPJJ-qBwqwSlgx9JEeCDw2W5DjrblOI_N0Jvsq_dUeOyoWVMqlOydOBhKNY0s
+mBrI4NZvEExucOm9WUJXMuJtvq1gBes-0go5j4TEv9sOP9uu81gqWTr_LOo6pgT0tFF
+yZfWC4kbXPXiQ2YT6mxCiQRRNM-l9cBdF6Jx6IOrsfFhBuYdYQ_mlL19HgDDOFaleyq
+mru6lKlASOsaE8dmLSeKcX91FbG79FKN8un24iwIDCbKT9xlUFl54xWVShNDFA]]></artwork>
         </figure>	
         </t>
         <t>
@@ -335,6 +335,7 @@ gTCKyiOsEIYSuIIDLy4YbHtY14SvZOUQwPDneFxQ]]></artwork>
           <artwork><![CDATA[{
   "iss":"https://as.example.com/",
   "aud":"https://rs.example.com/resource",
+  "iat":1514797892,
   "token_introspection":
      {
         "active":true,
