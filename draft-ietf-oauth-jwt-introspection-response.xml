@@ -230,9 +230,8 @@ token=2YotnFZFEjr1zCsicMWpAA]]></artwork>
          <t hangText="iat">MUST be set to the time when the introspection response
          was created by the authorization server.</t>
          <t hangText="token_introspection">A JSON object containing the members
-         of the token introspection response, as specified in the "OAuth Token
-         Introspection Response" registry established by <xref target="RFC7662"/>
-         as well as other members. The separation of the introspection members into
+         of the token introspection response as specified in <xref target="RFC7662"/>, section 2.2.
+         The separation of the introspection response members into
          a dedicated containing JWT claim is intended to prevent conflict and confusion
          with top-level JWT claims that may bear the same name.
          <vspace blankLines="1" />
@@ -245,11 +244,19 @@ token=2YotnFZFEjr1zCsicMWpAA]]></artwork>
          If possible, the AS MUST narrow down the <spanx style="verb">scope</spanx> value
          to the scopes relevant to the particular RS.
          <vspace blankLines="1" />
-         Claims from the "JSON Web Token Claims" registry that are commonly used in
-         <xref target="OpenID.Core"/> and can be applied to the resource owner MAY be included
+         As specified in section 2.2. of <xref target="RFC7662"/>, specific implementations 
+         MAY extend the token introspection response with service-specific claims. In the context 
+         of this specification, such claims will be added as top-level members of the 
+         <spanx style="verb">token_introspection</spanx> claim. 
+         Response names intended to be used across domains MUST be registered in the 
+        <xref target="IANA.OAuth.Token.Introspection">OAuth Token Introspection Response registry</xref> 
+         defined by <xref target="RFC7662"/>.
+         In addition, claims from the <xref target="IANA.JWT">JSON Web Token Claims registry</xref>
+         established by <xref target="RFC7519"/>
+         MAY be included
          as members in the <spanx style="verb">token_introspection</spanx> claim.
          They can serve to convey the privileges delegated to the client,
-         to identify the resource owner as a natural person or to
+         to identify the resource owner or to
          provide a required contact detail, such as an e-Mail address or phone number.
          When transmitting such claims the AS acts as an identity provider in regard to
          the RS. The AS determines based on its RS-specific policy what claims about the
@@ -752,15 +759,25 @@ mru6lKlASOsaE8dmLSeKcX91FbG79FKN8un24iwIDCbKT9xlUFl54xWVShNDFA]]></artwork>
 	</front>
 </reference>
 
-<reference anchor="IANA.JWT" target="https://www.iana.org/assignments/jwt/jwt.xhtml">
+<reference anchor="IANA.JWT" target="https://www.iana.org/assignments/jwt/jwt.xhtml#claims">
 	<front>
-	  <title>JSON Web Token (JWT)</title>
+	  <title>JSON Web Token (JWT) claims registry</title>
 	  <author fullname="IANA">
 	    <organization abbrev="ISO">IANA</organization>
 	  </author>
           <date/>
 	</front>
 </reference>
+
+    <reference anchor="IANA.OAuth.Token.Introspection" target="https://www.iana.org/assignments/oauth-parameters/oauth-parameters.xhtml#token-introspection-response">
+        <front>
+          <title>OAuth Token Introspection Response registry</title>
+          <author>
+            <organization>IANA</organization>
+          </author>
+          <date/>
+        </front>
+      </reference>
 
     </references>
 
@@ -774,6 +791,7 @@ mru6lKlASOsaE8dmLSeKcX91FbG79FKN8un24iwIDCbKT9xlUFl54xWVShNDFA]]></artwork>
           <date/>
         </front>
       </reference>
+
     </references> 
     
     <section anchor="History" title="Document History">
