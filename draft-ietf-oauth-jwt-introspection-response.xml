@@ -322,7 +322,7 @@ mru6lKlASOsaE8dmLSeKcX91FbG79FKN8un24iwIDCbKT9xlUFl54xWVShNDFA]]></artwork>
         <figure>
           <artwork><![CDATA[{
   "typ": "token-introspection+jwt",
-  "alg": "RS256"
+  "alg": "RS256",
   "kid": "wG6D"
 }]]></artwork>
         </figure>
@@ -504,8 +504,8 @@ mru6lKlASOsaE8dmLSeKcX91FbG79FKN8un24iwIDCbKT9xlUFl54xWVShNDFA]]></artwork>
      of the respective service provider MUST be enforced at all times.</t>
      <t>In any case, the AS MUST ensure that the scope of the legal basis is enforced
      throughout the whole process. The AS MUST retain the scope of the legal basis with 
-     the access token, e.g. in the scope value, and the AS MUST determine the data a 
-     resource server is allowed to receive based on the resource server’s identity and 
+     the access token, e.g. in the scope value, it MUST authenicate the RS, and the AS MUST 
+     determine the data a resource server is allowed to receive based on the resource server’s identity and 
      suitable token data, e.g. the scope value. </t>
     </section>
     
@@ -778,6 +778,11 @@ mru6lKlASOsaE8dmLSeKcX91FbG79FKN8un24iwIDCbKT9xlUFl54xWVShNDFA]]></artwork>
     
     <section anchor="History" title="Document History">
       <t>[[ To be removed from the final specification ]]</t>
+
+      <t>-10<list style="symbols">
+          <t>added requirement to authenticate RS if privacy sensitive data is released</t>
+          </list>
+      </t>    
 
       <t>-09<list style="symbols">
           <t>changes the Accept and Content-Type HTTP headers from
