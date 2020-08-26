@@ -1,0 +1,19 @@
+{
+    "iss": "https://as.example.com/",
+    "aud": "https://rs.example.com/resource",
+    "iat": 1514797892,
+    "token_introspection": {
+        "active": true,
+        "iss": "https://as.example.com/",
+        "aud": "https://rs.example.com/resource",
+        "iat": 1514797822,
+        "exp": 1514797942,
+        "client_id": "paiB2goo0a",
+        "scope": "read write dolphin",
+        "sub": "Z5O3upPC88QrAjx00dis",
+        "birthdate": "1982-02-01",
+        "given_name": "John",
+        "family_name": "Doe",
+        "jti": "t1FoCCaZd4Xv4ORJUWVUeTZfsKhW30CQCrWDDjwXy6w"
+    }
+}
