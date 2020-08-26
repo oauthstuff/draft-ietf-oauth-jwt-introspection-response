@@ -262,7 +262,7 @@ token=2YotnFZFEjr1zCsicMWpAA]]></artwork>
          the RS. The AS determines based on its RS-specific policy what claims about the
          resource owner to return in the token introspection response.
          <vspace blankLines="1" />
-         The AS MUST ensure the release of any privacy-sensitive data is legally based.
+         The AS MUST ensure the release of any privacy-sensitive data is legally based (see <xref target="privacy"/>).
          <vspace blankLines="1" />
          Further content of the introspection response is determined by the RS-specific
          policy at the AS.</t>
@@ -799,6 +799,8 @@ mru6lKlASOsaE8dmLSeKcX91FbG79FKN8un24iwIDCbKT9xlUFl54xWVShNDFA]]></artwork>
 
       <t>-10<list style="symbols">
           <t>added requirement to authenticate RS if privacy sensitive data is released</t>
+          <t>reworked text on claims from different registries</t>
+          <t>added forward reference to privacy considerations to section 5</t>
           </list>
       </t>    
 
