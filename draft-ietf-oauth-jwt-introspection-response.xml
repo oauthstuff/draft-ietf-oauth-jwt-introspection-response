@@ -44,7 +44,7 @@
 <?rfc subcompact="no" ?>
 <!-- keep one blank line between list items -->
 <!-- end of list of popular I-D processing instructions -->
-<rfc category="std" docName="draft-ietf-oauth-jwt-introspection-response-09"
+<rfc category="std" docName="draft-ietf-oauth-jwt-introspection-response-10"
      ipr="trust200902">
   <!--
 		category values: std, bcp, info, exp, and historic ipr values:
@@ -85,7 +85,7 @@
       </address>
     </author>
 
-    <date day="25" month="April" year="2020" />
+    <date day="18" month="October" year="2020" />
 
     <!-- Meta-data Declarations -->
 
@@ -729,29 +729,6 @@ mru6lKlASOsaE8dmLSeKcX91FbG79FKN8un24iwIDCbKT9xlUFl54xWVShNDFA]]></artwork>
           <date day="8" month="Nov" year="2014"/>
         </front>
       </reference>
-      
-       <reference anchor="OpenID.Core" target="http://openid.net/specs/openid-connect-core-1_0.html">
-        <front>
-          <title>OpenID Connect Core 1.0 incorporating errata set 1</title>
-
-		  <author fullname="Nat Sakimura">
-            <organization>NRI</organization>
-          </author>
-          <author fullname="John Bradley">
-            <organization>Ping Identity</organization>
-          </author>
-          <author fullname="Mike Jones">
-            <organization>Microsoft</organization>
-          </author>
-          <author fullname="Breno de Medeiros">
-            <organization>Google</organization>
-          </author>
-          <author fullname="Chuck Mortimore">
-            <organization>Salesforce</organization>
-          </author>
-          <date day="8" month="Nov" year="2014"/>
-        </front>
-      </reference>
 
 <reference anchor="IANA.MediaTypes" target="http://www.iana.org/assignments/media-types">
 	<front>
@@ -805,6 +782,7 @@ mru6lKlASOsaE8dmLSeKcX91FbG79FKN8un24iwIDCbKT9xlUFl54xWVShNDFA]]></artwork>
           <t>added requirement to authenticate RS if privacy sensitive data is released</t>
           <t>reworked text on claims from different registries</t>
           <t>added forward reference to privacy considerations to section 5</t>
+          <t>added text in privacy considerations regarding client/user tracking</t>
           </list>
       </t>    
 
