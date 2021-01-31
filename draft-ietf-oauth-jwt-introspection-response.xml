@@ -244,8 +244,8 @@ client_assertion=PHNhbWxwOl[...omitted for brevity...]ZT]]></artwork>
          claim to <spanx style="verb">false</spanx> and MUST NOT include other members.
          Otherwise, the <spanx style="verb">active</spanx> member is set to <spanx style="verb">true</spanx>.
          <vspace blankLines="1" />
-         If possible, the AS SHOULD narrow down the <spanx style="verb">scope</spanx> value
-         to the scopes relevant to the particular RS.
+         The AS SHOULD narrow down the <spanx style="verb">scope</spanx> value to the scopes
+         relevant to the particular RS.
          <vspace blankLines="1" />
          As specified in section 2.2 of <xref target="RFC7662"/>, implementations
          MAY extend the token introspection response with service-specific claims. In the context
