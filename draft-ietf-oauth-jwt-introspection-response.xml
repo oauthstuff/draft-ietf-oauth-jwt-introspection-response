@@ -260,12 +260,12 @@ client_assertion=PHNhbWxwOl[...omitted for brevity...]ZT]]></artwork>
          registry</xref> established by <xref target="RFC7519"/> MAY be included as members in the
          <spanx style="verb">token_introspection</spanx> claim, provided their names don't collide
          with <xref target="IANA.OAuth.Token.Introspection">OAuth Token Introspection Response
-         registry</xref> claims and care is taken to prevent other potential conflicts. Such
-         claims can for instance be included to convey privileges delegated to the client, to
-         identify the resource owner, or to provide a required contact detail, such as an e-Mail
-         address or phone number. When the AS acts as a provider of resource owner identity claims
-         to the RS, the AS determines based on its RS-specific policy what identity claims to
-         return in the token introspection response.
+         registry</xref> claims and care is taken to prevent other potential conflicts and
+         ambiguity. Such claims can for instance be included to convey privileges delegated to the
+         client, to identify the resource owner, or to provide a required contact detail, such as
+         an e-Mail address or phone number. When the AS acts as a provider of resource owner
+         identity claims to the RS, the AS determines based on its RS-specific policy what
+         identity claims to return in the token introspection response.
          <vspace blankLines="1" />
          The AS MUST ensure the release of any privacy-sensitive data is legally based (see
          <xref target="privacy"/>).
