@@ -163,8 +163,8 @@
     privacy-preserving manner, the authorization server MUST be able to identify, 
     authenticate and authorize resource servers.</t>
     <t>The authorization server MAY additionally encrypt the token introspection response JWTs.
-    To facilitate the encryption of response JWTs for a given RS the authorisation server
-    is provisioned with encryption keys and algorithms for the RS.</t>
+    If encryption is used the authorisation server is provisioned with encryption keys and
+    algorithms for the RS.</t>
     <t>The authorization server SHOULD be able to determine whether an RS is the
     audience for a particular access token and what data it is entitled to receive,
     otherwise the RS is not authorized to obtain data for the access token.
