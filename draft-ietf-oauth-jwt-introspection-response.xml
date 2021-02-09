@@ -163,18 +163,18 @@
     privacy-preserving manner, the authorization server MUST be able to identify, 
     authenticate and authorize resource servers.</t>
     <t>The authorization server MAY additionally encrypt the token introspection response JWTs.
-    If encryption is used the authorisation server is provisioned with encryption keys and
+    If encryption is used the authorization server is provisioned with encryption keys and
     algorithms for the RS.</t>
     <t>The authorization server SHOULD be able to determine whether an RS is the
     audience for a particular access token and what data it is entitled to receive,
     otherwise the RS is not authorized to obtain data for the access token.
     The AS has the discretion how to fulfil this requirement. The AS could, for example,
-    maintain a mapping between scopes values and resource servers.</t>
+    maintain a mapping between scope values and resource servers.</t>
     <t>The requirements given above imply that the authorization server
     maintains credentials and other configuration data for each RS.</t>
     <t>One way is by utilizing dynamic client registration <xref target="RFC7591"/>
     and treating every RS as an OAuth client. In this case, the authorization server
-    is assumed to at least maintain "client_id" and "token_endpoint_auth_method"
+    is assumed to at least maintain a "client_id" and a "token_endpoint_auth_method"
     with complementary authentication method metadata, such as "jwks" or "client_secret".
     In cases where the AS needs to acquire consent to transmit data to a RS, the following
     client metadata fields are recommended: "client_name", "client_uri", "contacts",
@@ -238,7 +238,7 @@ client_assertion=PHNhbWxwOl[...omitted for brevity...]ZT]]></artwork>
          a dedicated containing JWT claim is intended to prevent conflict and confusion
          with top-level JWT claims that may bear the same name.
          <vspace blankLines="1" />
-         If the access token is invalid, expired, revoked, or is not intended for the
+         If the access token is invalid, expired, revoked, or not intended for the
          calling resource server (audience), the authorization server MUST set the value of the
          <spanx style="verb">active</spanx> member in the <spanx style="verb">token_introspection</spanx>
          claim to <spanx style="verb">false</spanx> and MUST NOT include other members.
@@ -263,7 +263,7 @@ client_assertion=PHNhbWxwOl[...omitted for brevity...]ZT]]></artwork>
          registry</xref> claims and care is taken to prevent other potential conflicts and
          ambiguity. Such claims can for instance be included to convey privileges delegated to the
          client, to identify the resource owner, or to provide a required contact detail, such as
-         an e-Mail address or phone number. When the AS acts as a provider of resource owner
+         an e-Mail address or telephone number. When the AS acts as a provider of resource owner
          identity claims to the RS, the AS determines based on its RS-specific policy what
          identity claims to return in the token introspection response.
          <vspace blankLines="1" />
