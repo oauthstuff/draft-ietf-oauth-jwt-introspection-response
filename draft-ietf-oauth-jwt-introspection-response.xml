@@ -150,31 +150,31 @@
 </t>
     </section>
     
-    <section anchor="as-rs-relationshio" title="Resource Server Management">
+    <section anchor="as-rs-relationship" title="Resource Server Management">
     <t>The authorization server (AS) and the resource server (RS) maintain a strong two-way trust relationship.
     The resource server relies on the authorization server to obtain authorization,
     user and other data as input to its access control decisions and service delivery.
     The authorization server relies on the resource server to handle the provided data
     appropriately.</t> 
-    <t>In the context of this specification, the Token Introspection Endpoint is used to convey
+    <t>In the context of this specification, the token introspection endpoint is used to convey
     such security data and potentially also privacy sensitive data related to an access
     token.</t>
     <t>In order to process the introspection requests in a secure and
     privacy-preserving manner, the authorization server MUST be able to identify, 
     authenticate and authorize resource servers.</t>
-    <t>To support encrypted token introspection response JWTs,
-    the authorization server MUST also be provided with the respective
-    resource server encryption keys and algorithms.</t>
-    <t>The authorization server MUST be able to determine whether an RS is the
+    <t>The authorization server MAY additionally encrypt the token introspection response JWTs.
+    If encryption is used the authorization server is provisioned with encryption keys and
+    algorithms for the RS.</t>
+    <t>The authorization server SHOULD be able to determine whether an RS is the
     audience for a particular access token and what data it is entitled to receive,
     otherwise the RS is not authorized to obtain data for the access token.
     The AS has the discretion how to fulfil this requirement. The AS could, for example,
-    maintain a mapping between scopes values and resource servers.</t>
+    maintain a mapping between scope values and resource servers.</t>
     <t>The requirements given above imply that the authorization server
     maintains credentials and other configuration data for each RS.</t>
     <t>One way is by utilizing dynamic client registration <xref target="RFC7591"/>
     and treating every RS as an OAuth client. In this case, the authorization server
-    is assumed to at least maintain "client_id" and "token_endpoint_auth_method"
+    is assumed to at least maintain a "client_id" and a "token_endpoint_auth_method"
     with complementary authentication method metadata, such as "jwks" or "client_secret".
     In cases where the AS needs to acquire consent to transmit data to a RS, the following
     client metadata fields are recommended: "client_name", "client_uri", "contacts",
@@ -190,25 +190,28 @@
 
 	<section anchor="jwt_request" title="Requesting a JWT Response">
     
-	<t>A resource server requests a JWT introspection response by including an
-    <spanx style="verb">Accept</spanx> HTTP header "application/token-introspection+jwt"
-    in the introspection request.</t>
-        
-    <t>The AS SHOULD authenticate the caller at the token introspection endpoint.
-    Authentication can utilize client authentication methods or a separate access token issued to the resource server.
-    Whether a resource server is required to authenticate is determined by the respective RS-specific policy at the AS.</t>
+	<t>A resource server requests a JWT introspection response by sending an introspection request
+    with an <spanx style="verb">Accept</spanx> HTTP header field set to
+    "application/token-introspection+jwt".</t>
 
-    <t>The following is a non-normative example request with client authentication:</t>
+    <t>The AS MUST authenticate the caller at the token introspection endpoint. Authentication can
+    utilize client authentication methods or a separate access token issued to the resource server
+    and identifying it as subject.</t>
+
+    <t>The following is a non-normative example request, with the resource
+    server authenticating with a private key JWT:</t>
 
 	  <t>
 	  	<figure>
           <artwork><![CDATA[POST /introspect HTTP/1.1
 Host: as.example.com
 Accept: application/token-introspection+jwt
-Authorization: Basic czZCaGRSa3F0MzpnWDFmQmF0M2JW
 Content-Type: application/x-www-form-urlencoded
 
-token=2YotnFZFEjr1zCsicMWpAA]]></artwork>
+token=2YotnFZFEjr1zCsicMWpAA&
+client_assertion_type=
+ urn%3Aietf%3Aparams%3Aoauth%3Aclient-assertion-type%3Ajwt-bearer&
+client_assertion=PHNhbWxwOl[...omitted for brevity...]ZT]]></artwork>
         </figure>
 	  </t>
 
@@ -217,9 +220,9 @@ token=2YotnFZFEjr1zCsicMWpAA]]></artwork>
     <section anchor="jwt_response" title="JWT Response">
     
      <t>The introspection endpoint responds with a JWT, setting the
-     <spanx style="verb">Content-Type</spanx> HTTP header to
+     <spanx style="verb">Content-Type</spanx> HTTP header field to
      "application/token-introspection+jwt" and the JWT <spanx style="verb">typ</spanx>
-     ("type") header to "token-introspection+jwt".</t>
+     ("type") header parameter to "token-introspection+jwt".</t>
 
      <t>The JWT MUST include the following top-level claims:
      <list hangIndent="8" style="hanging">
@@ -235,34 +238,29 @@ token=2YotnFZFEjr1zCsicMWpAA]]></artwork>
          a dedicated containing JWT claim is intended to prevent conflict and confusion
          with top-level JWT claims that may bear the same name.
          <vspace blankLines="1" />
-         If the access token is invalid, expired, revoked, or is not intended for the
+         If the access token is invalid, expired, revoked, or not intended for the
          calling resource server (audience), the authorization server MUST set the value of the
          <spanx style="verb">active</spanx> member in the <spanx style="verb">token_introspection</spanx>
-         claim to <spanx style="verb">false</spanx> and other members MUST NOT be included.
+         claim to <spanx style="verb">false</spanx> and MUST NOT include other members.
          Otherwise, the <spanx style="verb">active</spanx> member is set to <spanx style="verb">true</spanx>.
          <vspace blankLines="1" />
-         If possible, the AS MUST narrow down the <spanx style="verb">scope</spanx> value
-         to the scopes relevant to the particular RS.
+         The AS SHOULD narrow down the <spanx style="verb">scope</spanx> value to the scopes
+         relevant to the particular RS.
          <vspace blankLines="1" />
-         As specified in section 2.2. of <xref target="RFC7662"/>, specific implementations 
-         MAY extend the token introspection response with service-specific claims. In the context 
-         of this specification, such claims will be added as top-level members of the 
-         <spanx style="verb">token_introspection</spanx> claim. 
-         Response names intended to be used across domains MUST be registered in the 
-        <xref target="IANA.OAuth.Token.Introspection">OAuth Token Introspection Response registry</xref> 
-         defined by <xref target="RFC7662"/>.
-         In addition, claims from the <xref target="IANA.JWT">JSON Web Token Claims registry</xref>
-         established by <xref target="RFC7519"/>
-         MAY be included
-         as members in the <spanx style="verb">token_introspection</spanx> claim.
-         They can serve to convey the privileges delegated to the client,
-         to identify the resource owner or to
-         provide a required contact detail, such as an e-Mail address or phone number.
-         When transmitting such claims the AS acts as an identity provider in regard to
-         the RS. The AS determines based on its RS-specific policy what claims about the
-         resource owner to return in the token introspection response.
+         As specified in section 2.2 of <xref target="RFC7662"/>, implementations MAY extend the
+         token introspection response with service-specific claims. In the context of this
+         specification, such claims will be added as top-level members of the
+         <spanx style="verb">token_introspection</spanx> claim.
          <vspace blankLines="1" />
-         The AS MUST ensure the release of any privacy-sensitive data is legally based (see <xref target="privacy"/>).
+         Token introspection response parameter names intended to be used across domains SHOULD be
+         registered in the <xref target="IANA.OAuth.Token.Introspection">OAuth Token Introspection
+         Response registry</xref> defined by <xref target="RFC7662"/>.
+         <vspace blankLines="1" />
+         When the AS acts as a provider of resource owner
+         identity claims to the RS, the AS determines based on its RS-specific policy what
+         identity claims to return in the token introspection response.
+         The AS MUST ensure the release of any privacy-sensitive data is legally based (see
+         <xref target="privacy"/>).
          <vspace blankLines="1" />
          Further content of the introspection response is determined by the RS-specific
          policy at the AS.</t>
@@ -271,7 +269,7 @@ token=2YotnFZFEjr1zCsicMWpAA]]></artwork>
 
      <t>The JWT MAY include other claims, including those from the "JSON Web Token Claims"
      registry established by <xref target="RFC7519"/>. The JWT SHOULD NOT include the
-     <spanx style="verb">sub</spanx> and <spanx style="verb">exp</spanx> claims
+     <spanx style="verb">sub</spanx> and <spanx style="verb">exp</spanx> claims,
      as an additional prevention against misuse of the JWT as an access token (see
      <xref target="Cross-JWT_Confusion"/>).</t>
           
@@ -283,19 +281,17 @@ token=2YotnFZFEjr1zCsicMWpAA]]></artwork>
      which is used as value of the <spanx style="verb">typ</spanx> ("type") header
      parameter of the JWT to indicate that the payload is a token introspection response.</t>
 
-     <t>The JWT is cryptographically secured as specified in <xref target="RFC7662"/>.</t>
+     <t>The JWT is cryptographically secured as specified in <xref target="RFC7519"/>.</t>
 
      <t>Depending on the specific resource server policy the JWT is either
      signed, or signed and encrypted. If the JWT is signed and encrypted it
      MUST be a Nested JWT, as defined in <xref target="RFC7519">JWT</xref>.</t>
 
-     <t>Note: If the resource server policy requires a signed and encrypted
-     response and the authorization server receives an unauthenticated request
-     containing an <spanx style="verb">Accept</spanx> header with content type other
-     than "application/token-introspection+jwt", it MUST refuse to serve the request and
-     return an HTTP status code 400. This is done to prevent downgrading attacks to
-     obtain token data intended for release to legitimate recipients only
-     (see <xref target="token_data_leakage"/>).</t>
+     <t>Note: If the AS requires signed introspection responses for some or all resource servers
+     it MUST refuse to serve introspection requests that don't authenticate the caller and return
+     an HTTP status code 400. This is done to prevent downgrading attacks to obtain token data
+     intended for release to legitimate recipients only (see
+     <xref target="token_data_leakage"/>).</t>
       
      <t>The following is a non-normative example response
      (with line breaks for display purposes only):</t>
@@ -465,33 +461,12 @@ mru6lKlASOsaE8dmLSeKcX91FbG79FKN8un24iwIDCbKT9xlUFl54xWVShNDFA]]></artwork>
       <t>The authorization server MUST use Transport Layer Security (TLS) 1.2
       (or higher) per BCP 195 <xref target="RFC7525"/> in order to prevent 
       token data leakage.</t>
-      <t>To prevent introspection of leaked tokens and to present an additional
-      security layer against token guessing attacks the authorization server
-      MAY require all requests to the token introspection endpoint to be
-      authenticated. As an alternative or as an addition to the authentication,
-      the intended recipients MAY be set up for encrypted responses.</t>
-      <t>In the latter case, confidentiality is ensured by the fact that only
-      the legitimate recipient is able to decrypt the response.
-      An attacker could try to circumvent this measure by requesting a plain 
-      JSON response, using an <spanx style="verb">Accept</spanx> header with the content type set
-      to, for example, "application/json" instead of "application/token-introspection+jwt". To prevent this
-      attack the authorization server MUST NOT serve requests with a content type
-      other than "application/token-introspection+jwt" if the resource server is set up to receive
-      encrypted responses (see also <xref target="jwt_response"/>).</t>
-      </section>
 
-      <section anchor="confidential_token_data" title="Keeping Token Data Confidential from OAuth Clients">
-      <t>Authorization servers with a policy that requires token data to be
-      kept confidential from OAuth clients must require all requests to the
-      token introspection endpoint to be authenticated. As an alternative or as
-      an addition to the authentication, the intended recipients may be set up
-      for encrypted responses.</t>
-            </section>
-
-      <section anchor="introspection_activity_audit" title="Logging and Audit of Introspection Activity">
-      <t>Authorization servers with a policy that requires token introspection
-      activity to be logged and audited must require all requests to the token
-      introspection endpoint to be authenticated.</t>
+      <t>Section 2.1 of <xref target="RFC7662"/> permits requests to the introspection endpoint to
+      be authorized with an access token which doesn't identify the caller. To prevent
+      introspection of leaked tokens by parties that are not the intended consumer the
+      authorization server MUST require all requests to the token introspection endpoint to be
+      authenticated.</t>
       </section>
 
     </section>
@@ -511,12 +486,12 @@ mru6lKlASOsaE8dmLSeKcX91FbG79FKN8un24iwIDCbKT9xlUFl54xWVShNDFA]]></artwork>
      of the respective service provider MUST be enforced at all times.</t>
      <t>In any case, the AS MUST ensure that the scope of the legal basis is enforced
      throughout the whole process. The AS MUST retain the scope of the legal basis with 
-     the access token, e.g. in the scope value, it MUST authenicate the RS, and the AS MUST 
+     the access token, e.g. in the scope value, it MUST authenticate the RS, and the AS MUST
      determine the data a resource server is allowed to receive based on the resource server’s identity and 
      suitable token data, e.g. the scope value. </t>
      <t>Implementers should be aware that a token introspection request lets the AS know when the client 
      (and potentially the user) is accessing the RS, which is also an indication of when the user is using 
-     the client. If this impliction is not accepatable, implementars MUST use other means to carry 
+     the client. If this implication is not acceptable, implementers MUST use other means to carry
      access token data, e.g. directly transferring the data needed by the RS within the access token.</t>
     </section>
     
