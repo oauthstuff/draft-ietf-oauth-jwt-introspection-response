@@ -256,7 +256,10 @@ client_assertion=PHNhbWxwOl[...omitted for brevity...]ZT]]></artwork>
          registered in the <xref target="IANA.OAuth.Token.Introspection">OAuth Token Introspection
          Response registry</xref> defined by <xref target="RFC7662"/>.
          <vspace blankLines="1" />
-         In addition, selected claims from the <xref target="IANA.JWT">JSON Web Token Claims
+When the AS acts as a provider of resource owner
+         identity claims to the RS, the AS determines based on its RS-specific policy what
+         identity claims to return in the token introspection response. The AS MUST ensure the release of any privacy-sensitive data is legally based (see
+         <xref target="privacy"/>).
          registry</xref> established by <xref target="RFC7519"/> MAY be included as members in the
          <spanx style="verb">token_introspection</spanx> claim, provided their names don't collide
          with <xref target="IANA.OAuth.Token.Introspection">OAuth Token Introspection Response
