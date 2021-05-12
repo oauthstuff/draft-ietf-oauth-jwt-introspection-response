@@ -756,10 +756,8 @@ eyqmru6lKlASOsaE8dmLSeKcX91FbG79FKN8un24iwIDCbKT9xlUFl54xWVShNDFA]]></artwork>
       <t>-11<list style="symbols">
           <t>consistent normative language that the AS must authenticate all callers
               to the token introspection endpoint when complying with this specification</t>
-          <t>removes text that claims from the JSON Web Token Claims registry may be included in the token_introspection claim```
-              included in the token_introspection claim; such and other claim names should
-              be registered explicitly in the OAuth Token Introspection Response
-              registry</t>
+          <t>removes text that claims from the JSON Web Token Claims registry may be included
+              in the token_introspection claim</t>
           <t>updates the privacy considerations section</t>
           <t>fixes the example BASE64URL encoded JWT payload</t>
       </list>
