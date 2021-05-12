@@ -497,8 +497,8 @@ eyqmru6lKlASOsaE8dmLSeKcX91FbG79FKN8un24iwIDCbKT9xlUFl54xWVShNDFA]]></artwork>
     
     <section anchor="Acknowledgements" title="Acknowledgements">
       <t>We would like to thank Petteri Stenius, Neil Madden, Filip Skokan, Tony 
-      Nadalin, Remco Schaar, Justin Richer and Takahiko Kawasaki for their valuable
-      feedback.</t>
+      Nadalin, Remco Schaar, Justin Richer, Takahiko Kawasaki, Benjamin Kaduk and
+      Robert Wilton for their valuable feedback.</t>
     </section>
 
     <!-- Possibly a 'Contributors' section ... -->
@@ -752,6 +752,18 @@ eyqmru6lKlASOsaE8dmLSeKcX91FbG79FKN8un24iwIDCbKT9xlUFl54xWVShNDFA]]></artwork>
     
     <section anchor="History" title="Document History">
       <t>[[ To be removed from the final specification ]]</t>
+
+      <t>-11<list style="symbols">
+          <t>consistent normative language that the AS must authenticate all callers
+              to the token introspection endpoint when complying with this specification</t>
+          <t>removes text that claims from the JSON Web Token Claims registry may be included in the token_introspection claim```
+              included in the token_introspection claim; such and other claim names should
+              be registered explicitly in the OAuth Token Introspection Response
+              registry</t>
+          <t>updates the privacy considerations section</t>
+          <t>fixes the example BASE64URL encoded JWT payload</t>
+      </list>
+      </t>
 
       <t>-10<list style="symbols">
           <t>added requirement to authenticate RS if privacy sensitive data is released</t>
