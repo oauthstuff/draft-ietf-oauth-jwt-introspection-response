@@ -165,7 +165,7 @@
     <t>The authorization server MAY additionally encrypt the token introspection response JWTs.
     If encryption is used the authorization server is provisioned with encryption keys and
     algorithms for the RS.</t>
-    <t>The authorization server SHOULD be able to determine whether an RS is the
+    <t>The authorization server MUST be able to determine whether an RS is the
     audience for a particular access token and what data it is entitled to receive,
     otherwise the RS is not authorized to obtain data for the access token.
     The AS has the discretion how to fulfil this requirement. The AS could, for example,
@@ -287,10 +287,10 @@ client_assertion=PHNhbWxwOl[...omitted for brevity...]ZT]]></artwork>
      signed, or signed and encrypted. If the JWT is signed and encrypted it
      MUST be a Nested JWT, as defined in <xref target="RFC7519">JWT</xref>.</t>
 
-     <t>Note: If the AS requires signed introspection responses for some or all resource servers
-     it MUST refuse to serve introspection requests that don't authenticate the caller and return
-     an HTTP status code 400. This is done to prevent downgrading attacks to obtain token data
-     intended for release to legitimate recipients only (see
+     <t>Note: An AS compliant with this specification MUST refuse to serve introspection
+     requests that don't authenticate the caller and return an HTTP status code 400. This is
+     done to ensure token data is released to legitimate recipients only and prevent
+     downgrading to <xref target="RFC7662"/> behavior (see
      <xref target="token_data_leakage"/>).</t>
       
      <t>The following is a non-normative example response
@@ -464,7 +464,7 @@ mru6lKlASOsaE8dmLSeKcX91FbG79FKN8un24iwIDCbKT9xlUFl54xWVShNDFA]]></artwork>
 
       <t>Section 2.1 of <xref target="RFC7662"/> permits requests to the introspection endpoint to
       be authorized with an access token which doesn't identify the caller. To prevent
-      introspection of leaked tokens by parties that are not the intended consumer the
+      introspection of tokens by parties that are not the intended consumer the
       authorization server MUST require all requests to the token introspection endpoint to be
       authenticated.</t>
       </section>
