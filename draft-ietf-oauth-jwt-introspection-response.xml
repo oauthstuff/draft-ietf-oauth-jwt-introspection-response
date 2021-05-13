@@ -288,7 +288,7 @@ client_assertion=PHNhbWxwOl[...omitted for brevity...]ZT]]></artwork>
      MUST be a Nested JWT, as defined in <xref target="RFC7519">JWT</xref>.</t>
 
      <t>Note: An AS compliant with this specification MUST refuse to serve introspection
-     requests that don't authenticate the caller and return an HTTP status code 400. This is
+     requests that don't authenticate the caller, and return an HTTP status code 400. This is
      done to ensure token data is released to legitimate recipients only and prevent
      downgrading to <xref target="RFC7662"/> behavior (see
      <xref target="token_data_leakage"/>).</t>
