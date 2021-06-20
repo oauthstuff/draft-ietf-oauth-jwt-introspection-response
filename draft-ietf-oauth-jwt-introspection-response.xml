@@ -44,7 +44,7 @@
 <?rfc subcompact="no" ?>
 <!-- keep one blank line between list items -->
 <!-- end of list of popular I-D processing instructions -->
-<rfc category="std" docName="draft-ietf-oauth-jwt-introspection-response-10"
+<rfc category="std" docName="draft-ietf-oauth-jwt-introspection-response-11"
      ipr="trust200902">
   <!--
 		category values: std, bcp, info, exp, and historic ipr values:
@@ -85,7 +85,7 @@
       </address>
     </author>
 
-    <date day="18" month="October" year="2020" />
+    <date day="20" month="June" year="2021" />
 
     <!-- Meta-data Declarations -->
 
