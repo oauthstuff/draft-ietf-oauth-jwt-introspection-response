@@ -252,7 +252,7 @@ client_assertion=PHNhbWxwOl[...omitted for brevity...]ZT]]></artwork>
          specification, such claims will be added as top-level members of the
          <spanx style="verb">token_introspection</spanx> claim.
          <vspace blankLines="1" />
-         Token introspection response parameter names intended to be used across domains SHOULD be
+         Token introspection response parameter names intended to be used across domains MUST be
          registered in the <xref target="IANA.OAuth.Token.Introspection">OAuth Token Introspection
          Response registry</xref> defined by <xref target="RFC7662"/>.
          <vspace blankLines="1" />
